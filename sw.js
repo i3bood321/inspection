@@ -1,5 +1,5 @@
-// Keeps the app working without internet (weak signal in the kitchen).
-const CACHE="rounds-v1";
+// Keeps the app working without internet, and picks up new versions right away.
+const CACHE="rounds-v2";
 const CORE=["./","./index.html","./manifest.json","./icon-180.png","./icon-192.png","./icon-512.png"];
 const LIBS=[
  "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js",
@@ -9,7 +9,7 @@ const LIBS=[
 self.addEventListener("install",e=>{
   e.waitUntil((async()=>{
     const c=await caches.open(CACHE);
-    await c.addAll(CORE);
+    for(const u of CORE){try{const r=await fetch(u,{cache:"no-cache"});if(r.ok)await c.put(u,r)}catch(err){}}
     for(const u of LIBS){try{const r=await fetch(u,{mode:"cors"});if(r.ok)await c.put(u,r)}catch(err){}}
   })());
   self.skipWaiting();
@@ -19,6 +19,17 @@ self.addEventListener("activate",e=>{
 });
 self.addEventListener("fetch",e=>{
   const req=e.request;if(req.method!=="GET")return;
+  const url=new URL(req.url);
+  const isPage=req.mode==="navigate"||(url.origin===location.origin&&(url.pathname.endsWith("/")||url.pathname.endsWith("index.html")));
+  if(isPage){
+    // network first: always try the newest version, fall back to the saved copy when offline
+    e.respondWith((async()=>{
+      const c=await caches.open(CACHE);
+      try{const res=await fetch(req,{cache:"no-cache"});if(res&&res.ok)c.put("./index.html",res.clone());return res}
+      catch(err){return (await c.match(req,{ignoreSearch:true}))||(await c.match("./index.html"))||Response.error()}
+    })());
+    return;
+  }
   e.respondWith((async()=>{
     const c=await caches.open(CACHE);
     const hit=await c.match(req,{ignoreSearch:true});

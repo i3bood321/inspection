@@ -41,6 +41,7 @@
   --hole:#0F171A; color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic","Segoe UI",Tahoma,"DejaVu Sans",sans-serif;font-size:16px;line-height:1.6;-webkit-tap-highlight-color:transparent}
 button,input,textarea,select{font:inherit;color:inherit}
@@ -228,7 +229,8 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.7}
 "use strict";
 
 /* ---------- constants ---------- */
-const TYPES={daily:"تفتيش يومي",weekly:"تفتيش أسبوعي",monthly:"تفتيش شهري",report:"التقرير الشهري",checklist:"تشك لست يومي"};
+const TYPES={checklist:"التفتيش اليومي",weekly:"تفتيش أسبوعي",monthly:"تفتيش شهري",report:"التقرير الشهري",daily:"تفتيش يومي (قديم)"};
+const NEW_TYPES=["checklist","weekly","monthly","report"];
 function defaultChecklist(inspector){
   return{items:["نظافة الأرضية","نظافة الجدران","نظافة السقف","نظافة الأسطح وطاولات التحضير","نظافة المعدات والأدوات","درجة حرارة الثلاجات ضمن الحد المسموح","درجة حرارة الفريزرات ضمن الحد المسموح","تغطية الأطعمة وتخزينها بشكل صحيح","ملصقات التاريخ والصلاحية","النظافة الشخصية للعاملين (غطاء الرأس، القفازات، الزي)","التخلص من النفايات وإغلاق الحاويات","عدم وجود حشرات أو آثار قوارض"].map(text=>({id:uid(),text})),
     signers:[{id:uid(),role:"توقيع المشرف",name:""},{id:uid(),role:"توقيع الأخصائي",name:inspector||""}]};
@@ -414,9 +416,10 @@ function isChecklist(r){return !!r&&r.type==="checklist"}
 function daysIn(month){const [y,m]=month.split("-").map(Number);return new Date(y,m,0).getDate()}
 function monthLabel(month){try{const [y,m]=month.split("-").map(Number);return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{month:"long",year:"numeric"}).format(new Date(y,m-1,1))}catch(e){return month}}
 function dayLabel(month,d){try{const [y,m]=month.split("-").map(Number);return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{weekday:"short"}).format(new Date(y,m-1,d))}catch(e){return ""}}
-function cMark(r,d,iid){return ((r.days||{})[d]||{})[iid]||null}
-function dayState(r,d){let ok=0,bad=0;for(const it of r.items){const m=cMark(r,d,it.id);if(m&&m.v==="ok")ok++;else if(m&&m.v==="bad")bad++}const n=r.items.length;return{ok,bad,done:ok+bad,n,full:n>0&&ok+bad===n}}
-function clDaysDone(r){let k=0;const N=daysIn(r.month);for(let d=1;d<=N;d++)if(dayState(r,d).full)k++;return k}
+function cMark(r,zid,d,iid){return (((r.days||{})[zid]||{})[d]||{})[iid]||null}
+function cDay(r,zid,d){const z=(r.days[zid]=r.days[zid]||{});return (z[d]=z[d]||{})}
+function dayState(r,zid,d){let ok=0,bad=0;for(const it of r.items){const m=cMark(r,zid,d,it.id);if(m&&m.v==="ok")ok++;else if(m&&m.v==="bad")bad++}const n=r.items.length;return{ok,bad,done:ok+bad,n,full:n>0&&ok+bad===n}}
+function clDaysDone(r,zid){let k=0;const N=daysIn(r.month);for(let d=1;d<=N;d++)if(dayState(r,zid,d).full)k++;return k}
 function allNotes(r){const out=[];if(isChecklist(r))return out;if(isReport(r)){for(const s of r.sections)for(const n of (r.notes[s.id]||[]))out.push(n)}else{for(const z of (r.zones||[]))for(const o of ((r.obs||{})[z.id]||[]))out.push(o)}return out}
 function roundCounts(r){const c={ok:0,obs:0,minor:0,major:0,total:0};for(const o of allNotes(r)){c[o.level]=(c[o.level]||0)+1;c.total++}return c}
 function cellVal(r,sid,aid,iid){return ((r.checks[sid]||{})[aid]||{})[iid]||""}
@@ -431,19 +434,21 @@ function countsHTML(c,empty){
   if(!c.total)return '<div class="counts"><span>'+esc(empty||"لا توجد ملاحظات بعد")+'</span></div>';
   return '<div class="counts">'+LEVELS.filter(l=>c[l.k]).map(l=>'<span><i class="dot '+l.k+'"></i>'+esc(l.short)+" "+c[l.k]+"</span>").join("")+"</div>";
 }
-function normRound(r){r.obs=r.obs||{};r.zones=r.zones||[];if(r.type==="checklist"){r.items=r.items||[];r.days=r.days||{};r.signers=r.signers||[];r.month=r.month||(r.date||todayISO()).slice(0,7)}if(r.type==="report"){r.sections=r.sections||[];r.items=r.items||[];r.signers=r.signers||[];r.checks=r.checks||{};r.notes=r.notes||{}}}
+function normRound(r){r.obs=r.obs||{};r.zones=r.zones||[];if(r.type==="checklist"){r.items=r.items||[];r.days=r.days||{};r.month=r.month||(r.date||todayISO()).slice(0,7);
+    if(!r.zones.length&&(r.area||Object.keys(r.days).some(k=>/^\d+$/.test(k)))){const z={id:uid(),name:r.area||"عام",color:PALETTE[1]};r.zones=[z];const old={};for(const k of Object.keys(r.days))if(/^\d+$/.test(k)){old[k]=r.days[k];delete r.days[k]}r.days[z.id]=old;delete r.area}}if(r.type==="report"){r.sections=r.sections||[];r.items=r.items||[];r.signers=r.signers||[];r.checks=r.checks||{};r.notes=r.notes||{}}}
 function sortedRounds(){return Object.values(S.rounds).sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt-a.createdAt))}
 
 /* ---------- navigation ---------- */
-function go(view){S.view=view;render();window.scrollTo(0,0);if(view.name==="round")centerDay()}
+function go(view){S.view=view;render();window.scrollTo(0,0);if(view.name==="czone")centerDay()}
 function centerDay(){const b=$(".day[aria-pressed=true]");if(b&&b.scrollIntoView)b.scrollIntoView({inline:"center",block:"nearest"})}
 function render(){
   const v=S.view;const app=$("#app");
   if(v.name==="round"&&!S.rounds[v.id])S.view={name:"home"};
   if(v.name==="zone"&&(!S.rounds[v.id]||!S.rounds[v.id].zones.find(z=>z.id===v.zoneId)))S.view=S.rounds[v.id]?{name:"round",id:v.id}:{name:"home"};
+  if(v.name==="czone"){const r=S.rounds[v.id];if(!isChecklist(r)||!r.zones.find(z=>z.id===v.zoneId))S.view=r?{name:"round",id:v.id}:{name:"home"}}
   if(v.name==="section"){const r=S.rounds[v.id];if(!isReport(r)||!r.sections.find(x=>x.id===v.sid))S.view=r?{name:"round",id:v.id}:{name:"home"}}
   const name=S.view.name;
-  app.innerHTML=name==="home"?viewHome():name==="round"?(isReport(S.rounds[S.view.id])?viewReport():isChecklist(S.rounds[S.view.id])?viewChecklist():viewRound()):name==="zone"?viewZone():name==="section"?viewSection():name==="rsettings"?viewReportSettings():name==="csettings"?viewChecklistSettings():viewSettings();
+  app.innerHTML=name==="home"?viewHome():name==="round"?(isReport(S.rounds[S.view.id])?viewReport():isChecklist(S.rounds[S.view.id])?viewChecklist():viewRound()):name==="zone"?viewZone():name==="section"?viewSection():name==="czone"?viewCZone():name==="rsettings"?viewReportSettings():name==="csettings"?viewChecklistSettings():viewSettings();
   hydrate(app);
 }
 
@@ -452,7 +457,7 @@ function viewHome(){
   const list=sortedRounds();
   const open=list.filter(r=>r.status!=="done");const done=list.filter(r=>r.status==="done");
   const card=r=>{
-    if(isChecklist(r))return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES.checklist)+(r.area?"، "+esc(r.area):"")+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهي":"جاري")+'</span></div><div class="d">'+esc(monthLabel(r.month))+'</div><div class="counts"><span>أيام مكتملة '+clDaysDone(r)+" من "+daysIn(r.month)+"</span></div></button>";
+    if(isChecklist(r))return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES.checklist)+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهي":"جاري")+'</span></div><div class="d">'+esc(monthLabel(r.month))+'</div><div class="counts"><span>'+(r.zones.length?esc(r.zones.map(z=>z.name).join("، ")):"لا توجد مناطق بعد")+"</span></div></button>";
     const c=roundCounts(r);const pr=isReport(r)?checkProgress(r):null;return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES[r.type]||"جولة")+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهية":"جارية")+'</span></div><div class="d">'+esc(fmtDate(r.date,true))+"</div>"+(pr?'<div class="counts"><span>البنود '+pr.done+" من "+pr.total+"</span></div>":"")+countsHTML(c)+"</button>"};
   let body="";
   if(!list.length){
@@ -530,22 +535,31 @@ function viewSection(){
 }
 function viewChecklist(){
   const r=S.rounds[S.view.id];const N=daysIn(r.month);const done=r.status==="done";
+  const rows=r.zones.map(z=>{const k=clDaysDone(r,z.id);const pct=Math.round(k*100/N);
+    return '<button class="board" data-act="open-zone" data-zid="'+z.id+'" style="--z:'+esc(z.color)+'"><span class="band'+(LIGHT_COLORS.has(z.color)?" light":"")+'"></span><span class="body"><span class="name">'+esc(z.name)+'</span><span class="sub">أيام مكتملة '+k+" من "+N+'</span><span class="progress"><i style="width:'+pct+'%"></i></span></span><span class="chev">'+I.chev+"</span></button>"}).join("");
+  return '<div class="top"><button class="iconbtn" data-act="home" aria-label="رجوع">'+I.back+'</button><h1></h1><button class="iconbtn" data-act="round-menu" aria-label="خيارات">'+I.more+"</button></div>"+
+    '<div class="wrap"><div class="hero"><div class="kind">'+esc(TYPES.checklist)+(done?"، منتهي":"")+'</div><div class="date">'+esc(monthLabel(r.month))+'</div><div class="meta">'+r.items.length+" بند لكل منطقة</div></div>"+
+    (r.zones.length?'<div class="list">'+rows+"</div>":'<button class="addbig" data-act="add-zone-to-round">'+I.plus+"<span>أضف أول منطقة</span><small>من مناطقك أو اكتب اسم جديد</small></button>")+
+    '<button class="link" data-act="manage-items">إدارة البنود (إضافة، تعديل، حذف)</button></div>'+
+    '<div class="bar"><div class="in"><button class="btn primary grow" data-act="add-zone-to-round">'+I.plus+"إضافة منطقة</button>"+(r.zones.length?'<button class="btn" data-act="export">'+I.share+"تصدير</button>":"")+"</div></div>";
+}
+function viewCZone(){
+  const r=S.rounds[S.view.id];const z=r.zones.find(x=>x.id===S.view.zoneId);const N=daysIn(r.month);
   const t=todayISO();const todayD=t.slice(0,7)===r.month?+t.slice(8,10):0;
   let d=S.view.day||todayD||1;if(d>N)d=N;S.view.day=d;
   const open=S.view.open||"";
-  const strip='<div class="days" data-days>'+Array.from({length:N},(_,i)=>{const k=i+1;const st=dayState(r,k);const cls=st.bad?"bad":st.full?"full":st.done?"part":"";
+  const strip='<div class="days" data-days>'+Array.from({length:N},(_,i)=>{const k=i+1;const st=dayState(r,z.id,k);const cls=st.bad?"bad":st.full?"full":st.done?"part":"";
     return '<button class="day '+cls+(k===todayD?" today":"")+'" data-act="pick-day" data-day="'+k+'" aria-pressed="'+(k===d)+'"><b>'+k+"</b><small>"+esc(dayLabel(r.month,k))+"</small><i></i></button>"}).join("")+"</div>";
-  const st=dayState(r,d);
-  const rows=r.items.map(it=>{const m=cMark(r,d,it.id)||{};const showNote=m.v==="bad"||m.n||open===it.id;
+  const st=dayState(r,z.id,d);
+  const rows=r.items.map(it=>{const m=cMark(r,z.id,d,it.id)||{};const showNote=m.v==="bad"||m.n||open===it.id;
     return '<div class="crow"><div class="l"><span class="t">'+esc(it.text)+'</span><button class="mk okb" data-act="mark" data-item="'+it.id+'" data-v="ok" aria-pressed="'+(m.v==="ok")+'" aria-label="مطابق">✓</button><button class="mk badb" data-act="mark" data-item="'+it.id+'" data-v="bad" aria-pressed="'+(m.v==="bad")+'" aria-label="غير مطابق">✗</button></div>'+
       (showNote?'<input class="input" data-cnote="'+it.id+'" value="'+esc(m.n||"")+'" placeholder="ملاحظة صغيرة (اختياري)">':'<button class="nb" data-act="note-open" data-item="'+it.id+'">+ ملاحظة</button>')+"</div>"}).join("");
-  return '<div class="top"><button class="iconbtn" data-act="home" aria-label="رجوع">'+I.back+'</button><h1></h1><button class="iconbtn" data-act="round-menu" aria-label="خيارات">'+I.more+"</button></div>"+
-    '<div class="wrap"><div class="hero" style="padding-bottom:10px"><div class="kind">'+esc(TYPES.checklist)+(r.area?"، "+esc(r.area):"")+(done?"، منتهي":"")+'</div><div class="date">'+esc(monthLabel(r.month))+'</div><div class="meta">أيام مكتملة '+clDaysDone(r)+" من "+N+"</div></div>"+
-    strip+
+  return '<div class="top"><button class="iconbtn" data-act="back-round" aria-label="رجوع">'+I.back+'</button><h1 style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:22px;border-radius:4px;background:'+esc(z.color)+';border:1px solid var(--line);display:inline-block"></span>'+esc(z.name)+'</h1><button class="iconbtn" data-act="zone-menu" aria-label="خيارات المنطقة">'+I.more+"</button></div>"+
+    '<div class="wrap"><div class="counts" style="margin:0 0 10px">'+esc(TYPES.checklist)+"، "+esc(monthLabel(r.month))+"، أيام مكتملة "+clDaysDone(r,z.id)+" من "+N+"</div>"+strip+
     '<div style="display:flex;align-items:center;gap:8px;margin:2px 0 12px"><div style="flex:1"><div style="font-weight:700;font-size:17px">يوم '+d+"، "+esc(dayLabel(r.month,d))+'</div><div class="counts">'+st.done+" من "+st.n+(st.bad?"، "+st.bad+" غير مطابق":"")+'</div></div><button class="btn" data-act="all-ok">الكل ✓</button></div>'+
     (r.items.length?rows:'<div class="empty"><p>ما فيه بنود. أضف بنودك من زر إدارة البنود.</p></div>')+
-    '<button class="link" data-act="manage-items">إدارة البنود (إضافة، تعديل، حذف)</button></div>'+
-    '<div class="bar"><div class="in">'+(d<N?'<button class="btn primary grow" data-act="next-day">اليوم التالي ('+(d+1)+")</button>":"")+'<button class="btn'+(d<N?"":" primary grow")+'" data-act="export">'+I.share+"تصدير</button></div></div>";
+    '<button class="link" data-act="manage-items">إدارة البنود</button></div>'+
+    '<div class="bar"><div class="in">'+(d<N?'<button class="btn primary grow" data-act="next-day">اليوم التالي ('+(d+1)+")</button>":'<button class="btn primary grow" data-act="back-round">رجوع للمناطق</button>')+"</div></div>";
 }
 function sheetManageItems(){
   const r=S.rounds[S.view.id];
@@ -553,10 +567,10 @@ function sheetManageItems(){
     const sh=openSheet('<div class="head"><button class="iconbtn" data-close aria-label="إغلاق">'+I.x+'</button><h2>بنود هذا الشهر</h2></div>'+
       r.items.map((it,i)=>'<div class="srow"><input class="input grow" data-mi="'+i+'" value="'+esc(it.text)+'"><button class="iconbtn" data-mdel="'+i+'" aria-label="حذف البند" style="border:0;background:transparent;color:var(--muted)">'+I.trash+"</button></div>").join("")+
       '<div class="srow" style="margin-top:14px"><input class="input grow" id="f-newitem" placeholder="بند جديد، مثل: نظافة المغاسل"><button class="btn primary" data-madd>إضافة</button></div>'+
-      '<p class="note">حذف بند يحذف علاماته في كل أيام الشهر. وتغيير البنود الافتراضية للشهور الجاية من الإعدادات.</p>',{full:true});
+      '<p class="note">البنود نفسها لكل مناطق هذا الشهر. حذف بند يحذف علاماته من كل الأيام. وتغيير البنود الافتراضية للشهور الجاية من الإعدادات.</p>',{full:true});
     $("[data-close]",sh).onclick=()=>{saveRound(r);closeSheet();render()};
     $$("[data-mi]",sh).forEach(inp=>inp.oninput=()=>{r.items[+inp.dataset.mi].text=inp.value});
-    $$("[data-mdel]",sh).forEach(b=>b.onclick=async()=>{const it=r.items[+b.dataset.mdel];const ok=await confirmSheet("حذف بند \""+it.text+"\" وعلاماته؟","احذف",true);if(!ok)return;r.items.splice(+b.dataset.mdel,1);for(const k in r.days)delete r.days[k][it.id];saveRound(r);draw()});
+    $$("[data-mdel]",sh).forEach(b=>b.onclick=async()=>{const it=r.items[+b.dataset.mdel];const ok=await confirmSheet("حذف بند \""+it.text+"\" وعلاماته؟","احذف",true);if(!ok)return;r.items.splice(+b.dataset.mdel,1);for(const zk in r.days)for(const k in r.days[zk])delete r.days[zk][k][it.id];saveRound(r);draw()});
     const inp=$("#f-newitem",sh);
     const add=()=>{const v=inp.value.trim();if(!v){toast("اكتب البند");return}r.items.push({id:uid(),text:v});saveRound(r);draw();setTimeout(()=>{const x=$("#f-newitem");if(x)x.focus()},50)};
     $("[data-madd]",sh).onclick=add;inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();add()}});
@@ -565,12 +579,10 @@ function sheetManageItems(){
 }
 function viewChecklistSettings(){
   const C=S.settings.checklist;const trash=I.trash;
-  return '<div class="top"><button class="iconbtn" data-act="settings" aria-label="رجوع">'+I.back+"</button><h1>إعدادات التشك لست اليومي</h1></div>"+
+  return '<div class="top"><button class="iconbtn" data-act="settings" aria-label="رجوع">'+I.back+"</button><h1>بنود التفتيش اليومي</h1></div>"+
   '<div class="wrap"><p class="note" style="margin:0 0 12px">هذي البنود الافتراضية لكل شهر جديد. وداخل كل شهر تقدر تضيف وتحذف بنود له لحاله.</p>'+
   '<div class="sec">البنود</div>'+C.items.map((it,i)=>'<div class="srow"><input class="input grow" data-root="checklist" data-rs="items.'+i+'.text" value="'+esc(it.text)+'"><button class="iconbtn" style="border:0;background:transparent;color:var(--muted)" data-act="rs-del" data-root="checklist" data-path="items.'+i+'" aria-label="حذف">'+trash+"</button></div>").join("")+
-  '<button class="link" data-act="rs-add" data-root="checklist" data-path="items">إضافة بند</button>'+
-  '<div class="sec">التواقيع</div>'+C.signers.map((g,i)=>'<div class="sblock"><div class="srow"><input class="input grow" data-root="checklist" data-rs="signers.'+i+'.role" value="'+esc(g.role)+'" aria-label="الصفة"><button class="iconbtn" data-act="rs-del" data-root="checklist" data-path="signers.'+i+'" aria-label="حذف">'+trash+'</button></div><input class="input" data-root="checklist" data-rs="signers.'+i+'.name" value="'+esc(g.name)+'" placeholder="الاسم"></div>').join("")+
-  '<button class="link" data-act="rs-add" data-root="checklist" data-path="signers">إضافة توقيع</button></div>';
+  '<button class="link" data-act="rs-add" data-root="checklist" data-path="items">إضافة بند</button></div>';
 }
 function viewReportSettings(){
   const R=S.settings.report;const trash=I.trash;
@@ -597,7 +609,7 @@ function viewSettings(){
   '<div class="sec">مناطقك المحفوظة</div><p class="note" style="margin:-4px 0 10px">تظهر كاختيارات سريعة لما تضيف منطقة في الجولة. أي منطقة جديدة تكتبها تنحفظ هنا تلقائيًا.</p><div class="list">'+zs+'</div><button class="link" data-act="add-zone">إضافة منطقة</button>'+
   '<p class="note">حذف منطقة من هنا ما يأثر على الجولات السابقة.</p>'+
   '<div class="sec">التقرير الشهري</div><button class="btn" style="width:100%" data-act="rsettings">الأقسام والبنود والتواقيع</button>'+
-  '<div class="sec">التشك لست اليومي</div><button class="btn" style="width:100%" data-act="csettings">البنود الافتراضية والتواقيع</button>'+
+  '<div class="sec">التفتيش اليومي</div><button class="btn" style="width:100%" data-act="csettings">البنود الافتراضية</button>'+
   '<div class="sec">نسخة احتياطية</div><p class="note" style="margin:-4px 0 10px">كل جولاتك وصورك محفوظة في هذا الجوال فقط. احفظ نسخة كل فترة في الملفات أو iCloud، عشان لو غيرت الجوال أو حذفت التطبيق ترجعها.</p>'+
   '<div style="display:flex;gap:10px"><button class="btn grow" data-act="backup">حفظ نسخة</button><label class="btn grow">استرجاع نسخة<input type="file" accept=".json,application/json" data-restore style="position:absolute;width:1px;height:1px;opacity:0"></label></div></div>';
 }
@@ -625,20 +637,20 @@ function confirmSheet(msg,okLabel,danger){
 }
 
 function sheetNewRound(){
-  let type="daily";
+  let type="checklist";
   const sh=openSheet('<h2>جولة جديدة</h2><div class="field"><span class="flabel">نوع الجولة</span><div class="seg two">'+
-    Object.entries(TYPES).map(([k,v])=>'<button class="opt" data-type="'+k+'" aria-pressed="'+(k===type)+'">'+esc(v)+"</button>").join("")+'</div></div>'+
-    '<div class="field" data-g="date"><label for="f-date">التاريخ</label><input class="input" type="date" id="f-date" value="'+todayISO()+'"></div>'+
-    '<div data-g="month" hidden><div class="field"><label for="f-month">الشهر</label><input class="input" type="month" id="f-month" value="'+todayISO().slice(0,7)+'"></div><div class="field"><label for="f-area">المنطقة أو القسم (اختياري)</label><input class="input" id="f-area" placeholder="مثال: المطبخ الساخن"></div></div>'+
-    '<p class="note" style="margin:-4px 0 16px" data-tnote>بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي.</p>'+
+    NEW_TYPES.map(k=>'<button class="opt" data-type="'+k+'" aria-pressed="'+(k===type)+'">'+esc(TYPES[k])+"</button>").join("")+'</div></div>'+
+    '<div class="field" data-g="date" hidden><label for="f-date">التاريخ</label><input class="input" type="date" id="f-date" value="'+todayISO()+'"></div>'+
+    '<div data-g="month"><div class="field"><label for="f-month">الشهر</label><input class="input" type="month" id="f-month" value="'+todayISO().slice(0,7)+'"></div></div>'+
+    '<p class="note" style="margin:-4px 0 16px" data-tnote>تفتيش لكل أيام الشهر: تضيف مناطقك، ولكل منطقة علامة صح أو خطأ لكل بند مع ملاحظة صغيرة.</p>'+
     '<button class="btn primary" style="width:100%" data-start>ابدأ الجولة</button>');
   $$("[data-type]",sh).forEach(b=>b.onclick=()=>{type=b.dataset.type;$$("[data-type]",sh).forEach(x=>x.setAttribute("aria-pressed",x===b));
     $("[data-g=date]",sh).hidden=type==="checklist";$("[data-g=month]",sh).hidden=type!=="checklist";
-    $("[data-tnote]",sh).textContent=type==="checklist"?"تشك لست لكل أيام الشهر: علامة صح أو خطأ لكل بند، مع ملاحظة صغيرة، وبدون صور.":type==="report"?"ثلاثة أقسام بجدول البنود والملاحظات والتواقيع، ويطلع تقرير للطباعة وملف صور مستقل.":"بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي."});
+    $("[data-tnote]",sh).textContent=type==="checklist"?"تفتيش لكل أيام الشهر: تضيف مناطقك، ولكل منطقة علامة صح أو خطأ لكل بند مع ملاحظة صغيرة.":type==="report"?"ثلاثة أقسام بجدول البنود والملاحظات والتواقيع، ويطلع تقرير للطباعة وملف صور مستقل.":"بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي."});
   $("[data-start]",sh).onclick=()=>{
     const date=$("#f-date",sh).value||todayISO();
     let r;
-    if(type==="checklist"){const C=S.settings.checklist;const month=$("#f-month",sh).value||todayISO().slice(0,7);r={id:uid(),type,month,date:month+"-01",area:$("#f-area",sh).value.trim(),status:"open",createdAt:Date.now(),items:clone(C.items),signers:clone(C.signers),days:{},zones:[],obs:{}}}
+    if(type==="checklist"){const C=S.settings.checklist;const month=$("#f-month",sh).value||todayISO().slice(0,7);r={id:uid(),type,month,date:month+"-01",status:"open",createdAt:Date.now(),items:clone(C.items),days:{},zones:[],obs:{}}}
     else if(type==="report"){const R=S.settings.report;r={id:uid(),type,date,status:"open",createdAt:Date.now(),title:R.title,org:R.org,sections:clone(R.sections),items:clone(R.items),signers:clone(R.signers),checks:{},notes:{},spray:"",zones:[],obs:{}}}
     else r={id:uid(),type,date,status:"open",createdAt:Date.now(),zones:[],obs:{}};
     S.rounds[r.id]=r;saveRound(r);closeSheet();go({name:"round",id:r.id});
@@ -653,13 +665,13 @@ function sheetAddZoneToRound(){
     '<button class="btn primary" style="width:100%" data-new>'+I.plus+"أضف وافتح المنطقة</button>"+
     (sugg.length?'<div class="sec">أو اختر من مناطقك السابقة</div><div class="chips">'+sugg.map(z=>'<button class="chip" data-add="'+z.id+'"><i class="dot" style="background:'+esc(z.color)+'"></i>'+esc(z.name)+"</button>").join("")+"</div>":""));
   const inp=$("#f-nz",sh);
-  const addZone=z=>{const c=clone(z);c.id=uid();r.zones.push(c);saveRound(r);closeSheet();go({name:"zone",id:r.id,zoneId:c.id})};
+  const addZone=z=>{const c=clone(z);c.id=uid();r.zones.push(c);saveRound(r);closeSheet();go({name:isChecklist(r)?"czone":"zone",id:r.id,zoneId:c.id})};
   $$("[data-add]",sh).forEach(b=>b.onclick=()=>addZone(S.settings.zones.find(x=>x.id===b.dataset.add)));
   const submit=()=>{
     const name=inp.value.trim();
     if(!name){toast("اكتب اسم المنطقة");inp.focus();return}
     const dup=r.zones.find(z=>z.name.trim()===name);
-    if(dup){closeSheet();go({name:"zone",id:r.id,zoneId:dup.id});return}
+    if(dup){closeSheet();go({name:isChecklist(r)?"czone":"zone",id:r.id,zoneId:dup.id});return}
     let z=S.settings.zones.find(x=>x.name.trim()===name);
     if(!z){
       const inRound=new Set(r.zones.map(x=>x.color)),saved=new Set(S.settings.zones.map(x=>x.color));
@@ -683,7 +695,8 @@ function sheetZoneMenu(){
   $("[data-dz]",sh).onclick=async()=>{
     closeSheet();
     const n=(r.obs[z.id]||[]).length;
-    const ok=await confirmSheet("حذف "+z.name+(n?" مع "+n+" ملاحظة وصورها":"")+"؟","احذف",true);if(!ok)return;
+    const ok=await confirmSheet("حذف "+z.name+(isChecklist(r)?" مع كل علاماتها في الشهر":n?" مع "+n+" ملاحظة وصورها":"")+"؟","احذف",true);if(!ok)return;
+    if(r.days)delete r.days[z.id];
     for(const o of (r.obs[z.id]||[]))for(const p of (o.photos||[]))S.store.deletePhoto(p.id);
     r.zones=r.zones.filter(x=>x.id!==z.id);delete r.obs[z.id];saveRound(r);go({name:"round",id:r.id});toast("حُذفت المنطقة");
   };
@@ -908,12 +921,12 @@ function sheetExportReport(r){
   });
 }
 function sheetExportChecklist(r){
-  const sh=openSheet('<h2>تصدير التشك لست</h2><p class="note" style="margin:-6px 0 14px">'+esc(monthLabel(r.month))+(r.area?"، "+esc(r.area):"")+"، أيام مكتملة "+clDaysDone(r)+" من "+daysIn(r.month)+"</p>"+
-    '<div class="exp"><button class="btn" data-x="cprint"><span class="badge" style="background:#15232A">PDF</span><span>جدول الشهر للطباعة والتوقيع<small>كل الأيام في صفحة، مع الملاحظات والتواقيع</small></span></button>'+
+  const sh=openSheet('<h2>تصدير التفتيش اليومي</h2><p class="note" style="margin:-6px 0 14px">'+esc(monthLabel(r.month))+"، "+r.zones.length+" منطقة</p>"+
+    '<div class="exp"><button class="btn" data-x="cprint"><span class="badge" style="background:#15232A">PDF</span><span>جدول الشهر للطباعة<small>كل منطقة في صفحة، مع ملاحظاتها</small></span></button>'+
     '<button class="btn" data-x="cxlsx"><span class="badge" style="background:#2E7D32">XLS</span><span>Excel<small>الجدول والملاحظات للأرشفة</small></span></button></div>');
   $$("[data-x]",sh).forEach(b=>b.onclick=async()=>{
     const kind=b.dataset.x;closeSheet();busy(true,"جارٍ تجهيز الملف…");
-    try{const base=TYPES.checklist+(r.area?" "+r.area:"")+" "+r.month;
+    try{const base=TYPES.checklist+" "+r.month;
       const blob=kind==="cprint"?await makeChecklistPrint(r):await makeChecklistXLSX(r);
       busy(false);await saveFile(base+(kind==="cprint"?".pdf":".xlsx"),blob);
     }catch(e){console.error(e);busy(false);toast(String(e&&e.message||"").startsWith("load")?"تعذر تحميل أداة التصدير، تأكد من الاتصال بالإنترنت":"تعذر تجهيز الملف")}
@@ -1086,59 +1099,51 @@ async function makeChecklistPrint(r){
   const tick=(ctx,cx,cy,s)=>{ctx.strokeStyle=INK;ctx.lineWidth=1.8;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(cx-s*.42,cy+s*.02);ctx.lineTo(cx-s*.12,cy+s*.32);ctx.lineTo(cx+s*.45,cy-s*.36);ctx.stroke()};
   const cross=(ctx,cx,cy,s)=>{ctx.strokeStyle=INK;ctx.lineWidth=2;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(cx-s*.34,cy-s*.34);ctx.lineTo(cx+s*.34,cy+s*.34);ctx.moveTo(cx+s*.34,cy-s*.34);ctx.lineTo(cx-s*.34,cy+s*.34);ctx.stroke()};
   const N=daysIn(r.month);const IC=220;const DW=(CW-IC)/N;
-  // numbered notes
-  const notes=[];const noteNo={};
-  for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,d,it.id);if(m&&m.n&&m.n.trim()){notes.push({d,it,m});noteNo[d+"|"+it.id]=notes.length}});
-  const pages=[];let page=null,y=0;
-  const newPage=()=>{page={items:[]};pages.push(page);y=TOP};
-  const place=(h,draw)=>{if(y+h>H-BOT)newPage();page.items.push({y,draw});y+=h};
-  newPage();
   const org=(S.settings.report&&S.settings.report.org)||"";
-  place(58,(ctx,y0)=>{
-    if(org)T(ctx,org,RIGHT,y0+12,f(700,14));
-    T(ctx,TYPES.checklist+(r.area?"، "+r.area:""),RIGHT,y0+33,f(400,13),"#333333");
-    T(ctx,"الشهر: "+monthLabel(r.month),W/2,y0+14,f(600,13.5),INK,"center");
-    T(ctx,r.area||TYPES.checklist,MX,y0+22,f(700,20),INK,"left");
-    ctx.fillStyle=LINE;ctx.fillRect(MX,y0+50,CW,1.2);
-  });
-  const header=(ctx,y0)=>{box(ctx,RIGHT-IC,y0,IC,40,"#E9EEEE");T(ctx,"البند / اليوم",RIGHT-8,y0+20,f(700,12));
-    for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;box(ctx,x,y0,DW,40,"#E9EEEE");T(ctx,String(d),x+DW/2,y0+14,f(700,11),INK,"center","ltr");T(ctx,dayLabel(r.month,d).replace(/^ال/,"").slice(0,4),x+DW/2,y0+29,f(400,7.5),"#555555","center")}};
-  place(40,header);
-  r.items.forEach((it,ii)=>{
-    const fo=f(400,11);const lines=wrap((ii+1)+". "+it.text,fo,IC-12);const h=Math.max(26,lines.length*14+10);
-    if(y+h>H-BOT){newPage();place(40,header)}
-    place(h,(ctx,y0)=>{
-      box(ctx,RIGHT-IC,y0,IC,h);lines.forEach((ln,li)=>T(ctx,ln,RIGHT-6,y0+(h-lines.length*14)/2+7+li*14,fo));
-      for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;const m=cMark(r,d,it.id);box(ctx,x,y0,DW,h,m&&m.v==="bad"?"#E6E6E6":null);
-        if(m&&m.v==="ok")tick(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.62);
-        else if(m&&m.v==="bad")cross(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.6);
-        const no=noteNo[d+"|"+it.id];if(no)T(ctx,String(no),x+3,y0+7,f(700,7.5),INK,"left","ltr");}
+  const pages=[];let page=null,y=0;
+  const newPage=z=>{page={z,items:[]};pages.push(page);y=TOP};
+  const place=(h,draw)=>{if(y+h>H-BOT)newPage(page.z);page.items.push({y,draw});y+=h};
+  const zones=r.zones.length?r.zones:[{id:"_",name:""}];
+  zones.forEach(z=>{
+    newPage(z);
+    const notes=[];const noteNo={};
+    for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,z.id,d,it.id);if(m&&m.n&&m.n.trim()){notes.push({d,it,m});noteNo[d+"|"+it.id]=notes.length}});
+    place(58,(ctx,y0)=>{
+      if(org)T(ctx,org,RIGHT,y0+12,f(700,14));
+      T(ctx,TYPES.checklist,RIGHT,y0+33,f(400,13),"#333333");
+      T(ctx,"الشهر: "+monthLabel(r.month),W/2,y0+14,f(600,13.5),INK,"center");
+      T(ctx,z.name,MX,y0+22,f(700,20),INK,"left");
+      ctx.fillStyle=LINE;ctx.fillRect(MX,y0+50,CW,1.2);
     });
+    const header=(ctx,y0)=>{box(ctx,RIGHT-IC,y0,IC,40,"#E9EEEE");T(ctx,"البند / اليوم",RIGHT-8,y0+20,f(700,12));
+      for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;box(ctx,x,y0,DW,40,"#E9EEEE");T(ctx,String(d),x+DW/2,y0+14,f(700,11),INK,"center","ltr");T(ctx,dayLabel(r.month,d).replace(/^ال/,"").slice(0,4),x+DW/2,y0+29,f(400,7.5),"#555555","center")}};
+    place(40,header);
+    r.items.forEach((it,ii)=>{
+      const fo=f(400,11);const lines=wrap((ii+1)+". "+it.text,fo,IC-12);const h=Math.max(26,lines.length*14+10);
+      if(y+h>H-BOT){newPage(z);place(40,header)}
+      place(h,(ctx,y0)=>{
+        box(ctx,RIGHT-IC,y0,IC,h);lines.forEach((ln,li)=>T(ctx,ln,RIGHT-6,y0+(h-lines.length*14)/2+7+li*14,fo));
+        for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;const m=cMark(r,z.id,d,it.id);box(ctx,x,y0,DW,h,m&&m.v==="bad"?"#E6E6E6":null);
+          if(m&&m.v==="ok")tick(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.62);
+          else if(m&&m.v==="bad")cross(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.6);
+          const no=noteNo[d+"|"+it.id];if(no)T(ctx,String(no),x+3,y0+7,f(700,7.5),INK,"left","ltr");}
+      });
+    });
+    place(24,(ctx,y0)=>{T(ctx,"✓ مطابق      ✗ غير مطابق      الرقم الصغير في الخانة = رقم الملاحظة تحت",RIGHT,y0+14,f(400,10.5),"#444444")});
+    place(28,(ctx,y0)=>{box(ctx,MX,y0,CW,28,"#E9EEEE");T(ctx,"الملاحظات",RIGHT-10,y0+14,f(700,12.5))});
+    const nf=f(400,11.5),nb=f(700,11.5);
+    if(!notes.length)place(26,(ctx,y0)=>{box(ctx,MX,y0,CW,26);T(ctx,"لا توجد ملاحظات.",RIGHT-10,y0+13,nf,"#555555")});
+    notes.forEach((x,i)=>{
+      const head="("+(i+1)+") يوم "+x.d+"، "+x.it.text+": ";const hw=tw(head,nb);
+      const lines=wrap(x.m.n,nf,CW-24-hw);
+      lines.forEach((ln,li)=>place(22,(ctx,y0)=>{
+        ctx.strokeStyle=LINE;ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(MX+.5,y0);ctx.lineTo(MX+.5,y0+22);ctx.moveTo(RIGHT+.5,y0);ctx.lineTo(RIGHT+.5,y0+22);ctx.stroke();
+        if(li===lines.length-1){ctx.strokeStyle="#9AA3A5";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(MX,y0+21.5);ctx.lineTo(RIGHT,y0+21.5);ctx.stroke()}
+        if(li===0)T(ctx,head,RIGHT-10,y0+11,nb);T(ctx,ln,RIGHT-10-hw,y0+11,nf);
+      }));
+    });
+    place(1,(ctx,y0)=>{ctx.fillStyle=LINE;ctx.fillRect(MX,y0-0.5,CW+1,1)});
   });
-  place(24,(ctx,y0)=>{T(ctx,"✓ مطابق      ✗ غير مطابق      الرقم الصغير في الخانة = رقم الملاحظة تحت",RIGHT,y0+14,f(400,10.5),"#444444")});
-  // notes
-  place(28,(ctx,y0)=>{box(ctx,MX,y0,CW,28,"#E9EEEE");T(ctx,"الملاحظات",RIGHT-10,y0+14,f(700,12.5))});
-  const nf=f(400,11.5),nb=f(700,11.5);
-  if(!notes.length)place(26,(ctx,y0)=>{box(ctx,MX,y0,CW,26);T(ctx,"لا توجد ملاحظات.",RIGHT-10,y0+13,nf,"#555555")});
-  notes.forEach((x,i)=>{
-    const head="("+(i+1)+") يوم "+x.d+"، "+x.it.text+": ";const hw=tw(head,nb);
-    const lines=wrap(x.m.n,nf,CW-24-hw);
-    lines.forEach((ln,li)=>place(22,(ctx,y0)=>{
-      ctx.strokeStyle=LINE;ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(MX+.5,y0);ctx.lineTo(MX+.5,y0+22);ctx.moveTo(RIGHT+.5,y0);ctx.lineTo(RIGHT+.5,y0+22);ctx.stroke();
-      if(li===lines.length-1){ctx.strokeStyle="#9AA3A5";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(MX,y0+21.5);ctx.lineTo(RIGHT,y0+21.5);ctx.stroke()}
-      if(li===0)T(ctx,head,RIGHT-10,y0+11,nb);T(ctx,ln,RIGHT-10-hw,y0+11,nf);
-    }));
-  });
-  place(1,(ctx,y0)=>{ctx.fillStyle=LINE;ctx.fillRect(MX,y0-0.5,CW+1,1)});
-  // signatures
-  const LW=230,NW=300,SH=42;const need=12+24+r.signers.length*SH;
-  if(y+need>H-BOT)newPage();y+=12;
-  if(r.signers.length){
-    place(24,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,24,"#E9EEEE");box(ctx,RIGHT-LW-NW,y0,NW,24,"#E9EEEE");box(ctx,MX,y0,CW-LW-NW,24,"#E9EEEE");
-      T(ctx,"الصفة",RIGHT-10,y0+12,f(700,11.5));T(ctx,"الاسم",RIGHT-LW-10,y0+12,f(700,11.5));T(ctx,"التوقيع",RIGHT-LW-NW-10,y0+12,f(700,11.5))});
-    r.signers.forEach(g=>place(SH,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,SH);box(ctx,RIGHT-LW-NW,y0,NW,SH);box(ctx,MX,y0,CW-LW-NW,SH);
-      T(ctx,g.role||"",RIGHT-10,y0+SH/2,f(600,12.5));T(ctx,g.name||"",RIGHT-LW-10,y0+SH/2,f(400,13))}));
-  }
   const total=pages.length;
   const cv=document.createElement("canvas");cv.width=W*K;cv.height=H*K;const ctx=cv.getContext("2d");
   const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"landscape",compress:true});
@@ -1153,13 +1158,17 @@ async function makeChecklistPrint(r){
 }
 async function makeChecklistXLSX(r){
   await loadScript(LIBS.xlsx);const X=window.XLSX;const N=daysIn(r.month);
-  const aoa=[[TYPES.checklist+(r.area?"، "+r.area:""),"","الشهر",monthLabel(r.month)],[],["البند",...Array.from({length:N},(_,i)=>String(i+1))]];
-  r.items.forEach(it=>aoa.push([it.text,...Array.from({length:N},(_,i)=>{const m=cMark(r,i+1,it.id);return m?(m.v==="ok"?"✓":"✗"):""})]));
-  aoa.push([],["الملاحظات"],["اليوم","البند","الحالة","الملاحظة"]);
-  for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,d,it.id);if(m&&m.n)aoa.push([d,it.text,m.v==="ok"?"✓":m.v==="bad"?"✗":"",m.n])});
-  aoa.push([],["الصفة","الاسم","التوقيع"]);r.signers.forEach(g=>aoa.push([g.role,g.name,""]));
-  const ws=X.utils.aoa_to_sheet(aoa);ws["!cols"]=[{wch:40},...Array.from({length:N},()=>({wch:4}))];
-  const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,"التشك لست");wb.Workbook={Views:[{RTL:true}]};
+  const wb=X.utils.book_new();
+  (r.zones.length?r.zones:[]).forEach((z,zi)=>{
+    const aoa=[[TYPES.checklist+"، "+z.name,"","الشهر",monthLabel(r.month)],[],["البند",...Array.from({length:N},(_,i)=>String(i+1))]];
+    r.items.forEach(it=>aoa.push([it.text,...Array.from({length:N},(_,i)=>{const m=cMark(r,z.id,i+1,it.id);return m&&m.v?(m.v==="ok"?"✓":"✗"):""})]));
+    aoa.push([],["الملاحظات"],["اليوم","البند","الحالة","الملاحظة"]);
+    for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,z.id,d,it.id);if(m&&m.n)aoa.push([d,it.text,m.v==="ok"?"✓":m.v==="bad"?"✗":"",m.n])});
+    const ws=X.utils.aoa_to_sheet(aoa);ws["!cols"]=[{wch:40},...Array.from({length:N},()=>({wch:4}))];
+    X.utils.book_append_sheet(wb,ws,(z.name.replace(/[\\\/\?\*\[\]:]/g," ").slice(0,31))||("منطقة "+(zi+1)));
+  });
+  if(!wb.SheetNames.length)X.utils.book_append_sheet(wb,X.utils.aoa_to_sheet([["لا توجد مناطق"]]),"فارغ");
+  wb.Workbook={Views:[{RTL:true}]};
   const out=X.write(wb,{bookType:"xlsx",type:"array"});
   return new Blob([out],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 }
@@ -1417,7 +1426,7 @@ document.addEventListener("click",e=>{
   else if(a==="settings")go({name:"settings"});
   else if(a==="new-round")sheetNewRound();
   else if(a==="open-round")go({name:"round",id:el.dataset.id});
-  else if(a==="open-zone")go({name:"zone",id:S.view.id,zoneId:el.dataset.zid});
+  else if(a==="open-zone")go({name:isChecklist(S.rounds[S.view.id])?"czone":"zone",id:S.view.id,zoneId:el.dataset.zid});
   else if(a==="back-round")go({name:"round",id:S.view.id});
   else if(a==="round-menu")sheetRoundMenu();
   else if(a==="zone-menu")sheetZoneMenu();
@@ -1439,11 +1448,11 @@ document.addEventListener("click",e=>{
   else if(a==="csettings")go({name:"csettings"});
   else if(a==="pick-day"){S.view.day=+el.dataset.day;S.view.open="";const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx}
   else if(a==="next-day"){S.view.day=(S.view.day||1)+1;S.view.open="";render();window.scrollTo(0,0);centerDay()}
-  else if(a==="mark"){const r=S.rounds[S.view.id];const d=S.view.day;const iid=el.dataset.item;const day=(r.days[d]=r.days[d]||{});const m=day[iid]||{};
+  else if(a==="mark"){const r=S.rounds[S.view.id];const d=S.view.day;const iid=el.dataset.item;const day=cDay(r,S.view.zoneId,d);const m=day[iid]||{};
     if(m.v===el.dataset.v){if(m.n)delete m.v;else{delete day[iid];m.v=null}}else m.v=el.dataset.v;
     if(m.v||m.n)day[iid]=m;saveRound(r);const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;
     if(m.v==="bad"){const inp=$('[data-cnote="'+iid+'"]');if(inp&&!inp.value)inp.focus({preventScroll:true})}}
-  else if(a==="all-ok"){const r=S.rounds[S.view.id];const d=S.view.day;const day=(r.days[d]=r.days[d]||{});let k=0;for(const it of r.items){const m=day[it.id]||{};if(!m.v){m.v="ok";day[it.id]=m;k++}}saveRound(r);const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;toast(k?"علّمت "+k+" بند بصح، غيّر اللي فيه ملاحظة":"كل البنود معلّمة")}
+  else if(a==="all-ok"){const r=S.rounds[S.view.id];const d=S.view.day;const day=cDay(r,S.view.zoneId,d);let k=0;for(const it of r.items){const m=day[it.id]||{};if(!m.v){m.v="ok";day[it.id]=m;k++}}saveRound(r);const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;toast(k?"علّمت "+k+" بند بصح، غيّر اللي فيه ملاحظة":"كل البنود معلّمة")}
   else if(a==="note-open"){S.view.open=el.dataset.item;const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;const inp=$('[data-cnote="'+el.dataset.item+'"]');if(inp)inp.focus({preventScroll:true})}
   else if(a==="manage-items")sheetManageItems();
   else if(a==="note-for-item"){const r=S.rounds[S.view.id];const it=r.items.find(x=>x.id===el.dataset.item);const v=cellVal(r,S.view.sid,S.view.aid,it.id);sheetObs(null,{text:it.text+" ("+(VL[v]?VL[v].label:"")+"): ",areas:[S.view.aid],level:v==="maint"?"minor":"obs"})}
@@ -1484,7 +1493,7 @@ document.addEventListener("input",e=>{
     if(t.dataset.rfield)r[t.dataset.rfield]=t.value;else r.signers[+t.dataset.rsig].name=t.value;
     clearTimeout(roundTimer);roundTimer=setTimeout(()=>saveRound(r),600);return;
   }
-  if(t.dataset.cnote){const r=S.rounds[S.view.id];if(!r)return;const d=S.view.day;const day=(r.days[d]=r.days[d]||{});const m=day[t.dataset.cnote]||{};m.n=t.value;if(!m.v&&!m.n)delete day[t.dataset.cnote];else day[t.dataset.cnote]=m;clearTimeout(roundTimer);roundTimer=setTimeout(()=>saveRound(r),600);return}
+  if(t.dataset.cnote){const r=S.rounds[S.view.id];if(!r)return;const d=S.view.day;const day=cDay(r,S.view.zoneId,d);const m=day[t.dataset.cnote]||{};m.n=t.value;if(!m.v&&!m.n)delete day[t.dataset.cnote];else day[t.dataset.cnote]=m;clearTimeout(roundTimer);roundTimer=setTimeout(()=>saveRound(r),600);return}
   if(t.dataset.rs){setPath(S.settings[t.dataset.root||"report"],t.dataset.rs,t.value);clearTimeout(settingsTimer);settingsTimer=setTimeout(saveSettings,600);return}
   if(t.hasAttribute("data-zname")){const z=S.settings.zones.find(x=>x.id===t.closest("[data-zid]").dataset.zid);if(z)z.name=t.value}
   else if(t.dataset.setting){S.settings[t.dataset.setting]=t.value}
