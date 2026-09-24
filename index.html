@@ -49,8 +49,8 @@ button{cursor:pointer}
 img{max-width:100%}
 .thumbs img,.ph img{display:block}
 
-.wrap{max-width:640px;margin:0 auto;padding:0 16px 132px}
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:8px;padding:12px 0 10px;max-width:640px;margin:0 auto}
+.wrap{max-width:672px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 132px max(16px,env(safe-area-inset-left,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:8px;padding:12px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));max-width:672px;margin:0 auto}
 .top h1{font-size:19px;font-weight:700;margin:0;flex:1;line-height:1.3}
 .iconbtn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
 .iconbtn svg{width:22px;height:22px}
@@ -103,6 +103,53 @@ img{max-width:100%}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{min-height:44px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 14px;display:inline-flex;align-items:center;gap:8px;font-weight:500}
 .chip .dot{width:12px;height:12px;border-radius:50%}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 14px}
+.tabs button{min-height:42px;border:0;border-radius:9px;background:transparent;font-weight:600;color:var(--muted)}
+.tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.14)}
+.hscroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin:0 0 10px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.chip{flex:none}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.chip .okm{color:var(--ok);font-weight:700}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.item .q{font-weight:600;line-height:1.55;margin-bottom:10px}
+.item .q small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.vals{display:flex;flex-wrap:wrap;gap:6px}
+.val{min-height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface2);font-weight:600;font-size:14px}
+.val[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.val[aria-pressed="true"].off{border-color:var(--obs);color:var(--obs);background:var(--surface);box-shadow:inset 0 0 0 1px var(--obs)}
+.ref{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:26px;padding:0 8px;border-radius:8px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:700;flex:none}
+.atxt{font-size:13.5px;color:var(--ink);font-weight:600}
+.progress{display:block;height:6px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:16px}
+.card h3{margin:0 0 10px;font-size:15px}
+.srow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.srow .input{min-height:44px;padding:8px 12px}
+.srow .grow{flex:1;min-width:0}
+.srow .small{width:64px;flex:none;text-align:center}
+.srow select.input{width:auto;flex:none;min-width:130px}
+.sblock{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+.sblock .iconbtn{border:0;background:transparent;color:var(--muted)}
+.seg.two{grid-template-columns:1fr 1fr}
+.days{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;margin:0 0 10px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:48px;min-height:58px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 0;line-height:1.2}
+.day b{font-size:16px}
+.day small{font-size:11px;color:var(--muted)}
+.day i{width:6px;height:6px;border-radius:50%;background:transparent;margin-top:2px}
+.day.full i{background:var(--ok)}.day.part i{background:var(--obs)}.day.bad i{background:var(--major)}
+.day.today{border-color:var(--muted)}
+.day[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.crow{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.crow .l{display:flex;align-items:center;gap:10px}
+.crow .t{flex:1;min-width:0;font-weight:600;line-height:1.45}
+.mk{width:50px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface2);display:grid;place-items:center;flex:none;font-size:20px;font-weight:700;color:var(--muted)}
+.mk.okb[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.mk.badb[aria-pressed="true"]{background:var(--major);border-color:var(--major);color:#fff}
+.crow .nb{background:none;border:0;color:var(--accent);font-size:13px;font-weight:600;padding:6px 0 0;min-height:32px}
+.crow input.input{margin-top:8px;min-height:42px;padding:8px 12px;font-size:15px}
+.itemnote{background:none;border:0;color:var(--accent);font-weight:600;font-size:13.5px;padding:8px 0 0;min-height:36px}
 .empty{border:1.5px dashed var(--line);border-radius:14px;padding:26px 18px;text-align:center;color:var(--muted)}
 .empty p{margin:0 0 12px}
 
@@ -174,13 +221,32 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.7}
 <body>
 <div id="app"><div class="loader">جارٍ التحميل…</div></div>
 <div id="layer"></div>
+<div id="layer2"></div>
 
 <script>
 (function(){
 "use strict";
 
 /* ---------- constants ---------- */
-const TYPES={daily:"تفتيش يومي",weekly:"تفتيش أسبوعي",monthly:"تدقيق شهري"};
+const TYPES={daily:"تفتيش يومي",weekly:"تفتيش أسبوعي",monthly:"تفتيش شهري",report:"التقرير الشهري",checklist:"تشك لست يومي"};
+function defaultChecklist(inspector){
+  return{items:["نظافة الأرضية","نظافة الجدران","نظافة السقف","نظافة الأسطح وطاولات التحضير","نظافة المعدات والأدوات","درجة حرارة الثلاجات ضمن الحد المسموح","درجة حرارة الفريزرات ضمن الحد المسموح","تغطية الأطعمة وتخزينها بشكل صحيح","ملصقات التاريخ والصلاحية","النظافة الشخصية للعاملين (غطاء الرأس، القفازات، الزي)","التخلص من النفايات وإغلاق الحاويات","عدم وجود حشرات أو آثار قوارض"].map(text=>({id:uid(),text})),
+    signers:[{id:uid(),role:"توقيع المشرف",name:""},{id:uid(),role:"توقيع الأخصائي",name:inspector||""}]};
+}
+const VALS=[{k:"yes",label:"نعم"},{k:"no",label:"لا"},{k:"none",label:"لا يوجد"},{k:"maint",label:"تحتاج صيانة"},{k:"na",label:"لا تحتاجها المنطقة"}];
+const VL=Object.fromEntries(VALS.map(v=>[v.k,v]));
+function defaultReport(inspector){
+  const A=n=>n.map(x=>({id:uid(),name:x}));
+  return{org:"إدارة خدمات الطعام",title:"التقرير الشهري",
+    sections:[
+      {id:uid(),name:"المطبخ",prefix:"م",color:"#C2410C",areas:A(["المطبخ الساخن","مطبخ الحمية","السلطة","الجزارة","الحلواني","السندويتشات","الغسيل الآلي والتنظيف"])},
+      {id:uid(),name:"المستودعات",prefix:"س",color:"#1565C0",areas:A(["مستودع المواد الغذائية الجاف","الثلاجات","الفريزرات","مستودع البلاستيك","مستودع المواد الكيميائية","غرف طعام الموظفين","غرف استراحة الموظفات"])},
+      {id:uid(),name:"الكافيتريا ومكتب المحاسب",prefix:"ك",color:"#6D28D9",areas:A(["كافيتريا النساء","كافيتريا الرجال"])}
+    ],
+    items:[["هل يوجد فتحات بالسقف والجدران والأرضية؟","no"],["هل فتحات التصريف محكمة الإغلاق؟","yes"],["هل يوجد آثار عض القوارض؟","no"],["هل توجد فضلات للقوارض؟","no"],["ما مدى فعالية مصائد الحشرات والقوارض؟","yes"],["ما مدى فعالية الستائر الهوائية؟","yes"],["هل تم تغطية المنطقة من قبل الشركة المسؤولة عن الرش ومكافحة الحشرات والقوارض؟","yes"]].map(([text,good])=>({id:uid(),text,good})),
+    signers:[{id:uid(),role:"توقيع مساعد مدير الإدارة",name:""},{id:uid(),role:"توقيع مدير الموقع",name:""},{id:uid(),role:"توقيع الأخصائي",name:inspector||""}]
+  };
+}
 const LEVELS=[
   {k:"ok",label:"مطابق",short:"مطابق"},
   {k:"obs",label:"ملاحظة",short:"ملاحظة"},
@@ -229,7 +295,7 @@ function fmtDate(iso,withDay){
   }catch(e){return iso}
 }
 function fmtTime(ts){try{return new Intl.DateTimeFormat("ar-SA-u-nu-latn",{hour:"numeric",minute:"2-digit"}).format(new Date(ts))}catch(e){return ""}}
-function toast(msg){const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+function toast(msg){$$(".toast").forEach(x=>x.remove());const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
 function busy(on,msg){let b=$(".busy");if(on){if(!b){b=document.createElement("div");b.className="busy";document.body.appendChild(b)}b.textContent=msg||"لحظة…"}else if(b)b.remove()}
 
 /* ---------- local storage (IndexedDB, with in-memory fallback) ---------- */
@@ -343,22 +409,41 @@ const S={store:null,settings:null,rounds:{},view:{name:"home"},memOnly:false};
 function defaultSettings(){return{inspector:"عبدالله السيف",site:"",zones:DEFAULT_ZONES.map(([name,color])=>({id:uid(),name,color}))}}
 function saveSettings(){S.store.saveSettings(S.settings).catch(e=>{console.warn(e);toast("تعذر حفظ الإعدادات")})}
 function saveRound(r){r.updatedAt=Date.now();S.store.saveRound(r).catch(e=>{console.warn(e);toast("تعذر حفظ الجولة، حاول مرة أخرى")})}
-function roundCounts(r){const c={ok:0,obs:0,minor:0,major:0,total:0};for(const z of r.zones){for(const o of (r.obs[z.id]||[])){c[o.level]=(c[o.level]||0)+1;c.total++}}return c}
+function isReport(r){return !!r&&r.type==="report"}
+function isChecklist(r){return !!r&&r.type==="checklist"}
+function daysIn(month){const [y,m]=month.split("-").map(Number);return new Date(y,m,0).getDate()}
+function monthLabel(month){try{const [y,m]=month.split("-").map(Number);return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{month:"long",year:"numeric"}).format(new Date(y,m-1,1))}catch(e){return month}}
+function dayLabel(month,d){try{const [y,m]=month.split("-").map(Number);return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{weekday:"short"}).format(new Date(y,m-1,d))}catch(e){return ""}}
+function cMark(r,d,iid){return ((r.days||{})[d]||{})[iid]||null}
+function dayState(r,d){let ok=0,bad=0;for(const it of r.items){const m=cMark(r,d,it.id);if(m&&m.v==="ok")ok++;else if(m&&m.v==="bad")bad++}const n=r.items.length;return{ok,bad,done:ok+bad,n,full:n>0&&ok+bad===n}}
+function clDaysDone(r){let k=0;const N=daysIn(r.month);for(let d=1;d<=N;d++)if(dayState(r,d).full)k++;return k}
+function allNotes(r){const out=[];if(isChecklist(r))return out;if(isReport(r)){for(const s of r.sections)for(const n of (r.notes[s.id]||[]))out.push(n)}else{for(const z of (r.zones||[]))for(const o of ((r.obs||{})[z.id]||[]))out.push(o)}return out}
+function roundCounts(r){const c={ok:0,obs:0,minor:0,major:0,total:0};for(const o of allNotes(r)){c[o.level]=(c[o.level]||0)+1;c.total++}return c}
+function cellVal(r,sid,aid,iid){return ((r.checks[sid]||{})[aid]||{})[iid]||""}
+function setCell(r,sid,aid,iid,v){const a=(r.checks[sid]=r.checks[sid]||{});const b=(a[aid]=a[aid]||{});if(v)b[iid]=v;else delete b[iid]}
+function checkProgress(r,sid){let done=0,total=0;for(const sec of r.sections){if(sid&&sec.id!==sid)continue;for(const a of sec.areas)for(const it of r.items){total++;if(cellVal(r,sec.id,a.id,it.id))done++}}return{done,total}}
+function refOf(sec,idx){return (sec.prefix||sec.name.slice(0,1))+"-"+(idx+1)}
+function areaNames(sec,ids){return (ids||[]).map(id=>(sec.areas.find(a=>a.id===id)||{}).name).filter(Boolean).join("، ")}
+function getPath(o,path){if(!path)return o;return path.split(".").reduce((x,k)=>x==null?x:x[k],o)}
+function setPath(o,path,v){const ks=path.split(".");const last=ks.pop();const t=getPath(o,ks.join("."));if(t)t[last]=v}
 function zoneCounts(r,zid){const c={ok:0,obs:0,minor:0,major:0,total:0};for(const o of (r.obs[zid]||[])){c[o.level]++;c.total++}return c}
 function countsHTML(c,empty){
   if(!c.total)return '<div class="counts"><span>'+esc(empty||"لا توجد ملاحظات بعد")+'</span></div>';
   return '<div class="counts">'+LEVELS.filter(l=>c[l.k]).map(l=>'<span><i class="dot '+l.k+'"></i>'+esc(l.short)+" "+c[l.k]+"</span>").join("")+"</div>";
 }
+function normRound(r){r.obs=r.obs||{};r.zones=r.zones||[];if(r.type==="checklist"){r.items=r.items||[];r.days=r.days||{};r.signers=r.signers||[];r.month=r.month||(r.date||todayISO()).slice(0,7)}if(r.type==="report"){r.sections=r.sections||[];r.items=r.items||[];r.signers=r.signers||[];r.checks=r.checks||{};r.notes=r.notes||{}}}
 function sortedRounds(){return Object.values(S.rounds).sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt-a.createdAt))}
 
 /* ---------- navigation ---------- */
-function go(view){S.view=view;render();window.scrollTo(0,0)}
+function go(view){S.view=view;render();window.scrollTo(0,0);if(view.name==="round")centerDay()}
+function centerDay(){const b=$(".day[aria-pressed=true]");if(b&&b.scrollIntoView)b.scrollIntoView({inline:"center",block:"nearest"})}
 function render(){
   const v=S.view;const app=$("#app");
   if(v.name==="round"&&!S.rounds[v.id])S.view={name:"home"};
   if(v.name==="zone"&&(!S.rounds[v.id]||!S.rounds[v.id].zones.find(z=>z.id===v.zoneId)))S.view=S.rounds[v.id]?{name:"round",id:v.id}:{name:"home"};
+  if(v.name==="section"){const r=S.rounds[v.id];if(!isReport(r)||!r.sections.find(x=>x.id===v.sid))S.view=r?{name:"round",id:v.id}:{name:"home"}}
   const name=S.view.name;
-  app.innerHTML=name==="home"?viewHome():name==="round"?viewRound():name==="zone"?viewZone():viewSettings();
+  app.innerHTML=name==="home"?viewHome():name==="round"?(isReport(S.rounds[S.view.id])?viewReport():isChecklist(S.rounds[S.view.id])?viewChecklist():viewRound()):name==="zone"?viewZone():name==="section"?viewSection():name==="rsettings"?viewReportSettings():name==="csettings"?viewChecklistSettings():viewSettings();
   hydrate(app);
 }
 
@@ -366,7 +451,9 @@ function render(){
 function viewHome(){
   const list=sortedRounds();
   const open=list.filter(r=>r.status!=="done");const done=list.filter(r=>r.status==="done");
-  const card=r=>{const c=roundCounts(r);return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES[r.type]||"جولة")+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهية":"جارية")+'</span></div><div class="d">'+esc(fmtDate(r.date,true))+"</div>"+countsHTML(c)+"</button>"};
+  const card=r=>{
+    if(isChecklist(r))return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES.checklist)+(r.area?"، "+esc(r.area):"")+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهي":"جاري")+'</span></div><div class="d">'+esc(monthLabel(r.month))+'</div><div class="counts"><span>أيام مكتملة '+clDaysDone(r)+" من "+daysIn(r.month)+"</span></div></button>";
+    const c=roundCounts(r);const pr=isReport(r)?checkProgress(r):null;return '<button class="round" data-act="open-round" data-id="'+r.id+'"><div class="r1"><span class="t">'+esc(TYPES[r.type]||"جولة")+'</span><span class="state'+(r.status==="done"?" done":"")+'">'+(r.status==="done"?"منتهية":"جارية")+'</span></div><div class="d">'+esc(fmtDate(r.date,true))+"</div>"+(pr?'<div class="counts"><span>البنود '+pr.done+" من "+pr.total+"</span></div>":"")+countsHTML(c)+"</button>"};
   let body="";
   if(!list.length){
     body='<div class="empty" style="margin-top:28px"><p>ابدأ أول جولة تفتيش، واختر نوعها: يومي أو أسبوعي أو شهري.</p><button class="btn primary" data-act="new-round">'+I.plus+"جولة جديدة</button></div>";
@@ -397,6 +484,111 @@ function viewZone(){
     (list.length?'<div class="list">'+items+"</div>":'<div class="empty"><p>لا توجد ملاحظات في هذه المنطقة. صوّر وسجّل أول ملاحظة.</p></div>')+
     "</div>"+'<div class="bar"><div class="in"><button class="btn primary grow" data-act="new-obs">'+I.plus+"إضافة ملاحظة</button></div></div>";
 }
+function viewReport(){
+  const r=S.rounds[S.view.id];const done=r.status==="done";const p=checkProgress(r);const c=roundCounts(r);
+  const rows=r.sections.map(sec=>{const sp=checkProgress(r,sec.id);const n=(r.notes[sec.id]||[]).length;const pct=sp.total?Math.round(sp.done*100/sp.total):0;
+    return '<button class="board" data-act="open-section" data-sid="'+sec.id+'" style="--z:'+esc(sec.color)+'"><span class="band"></span><span class="body"><span class="name">'+esc(sec.name)+'</span><span class="sub">البنود '+sp.done+" من "+sp.total+"، "+n+' ملاحظة</span><span class="progress"><i style="width:'+pct+'%"></i></span></span><span class="chev">'+I.chev+"</span></button>"}).join("");
+  const sig=r.signers.map((g,i)=>'<div class="field" style="margin-bottom:10px"><label for="sg'+i+'">'+esc(g.role)+'</label><input class="input" id="sg'+i+'" data-rsig="'+i+'" value="'+esc(g.name)+'" placeholder="الاسم"></div>').join("");
+  return '<div class="top"><button class="iconbtn" data-act="home" aria-label="رجوع">'+I.back+'</button><h1></h1><button class="iconbtn" data-act="round-menu" aria-label="خيارات التقرير">'+I.more+"</button></div>"+
+    '<div class="wrap"><div class="hero"><div class="kind">'+esc(r.title||TYPES.report)+(done?"، منتهي":"")+'</div><div class="date">'+esc(fmtDate(r.date,true))+'</div><div class="meta">البنود '+p.done+" من "+p.total+"</div>"+'<div style="margin-top:8px">'+countsHTML(c)+"</div></div>"+
+    '<div class="list">'+rows+"</div>"+
+    '<div class="card"><h3>أيام زيارة شركة الرش</h3><textarea class="input" style="min-height:84px" data-rfield="spray" placeholder="مثال: الزيارات يوم 5 و19، ومرفق صور العمليات">'+esc(r.spray||"")+"</textarea></div>"+
+    '<div class="card"><h3>أسماء الموقّعين في هذا التقرير</h3>'+sig+'<p class="note" style="margin:0">كل اسم يطلع في التقرير المطبوع وقدامه خانة توقيع فاضية.</p></div>'+
+    "</div>"+
+    '<div class="bar"><div class="in">'+(done?'<button class="btn primary grow" data-act="export">'+I.share+"تصدير</button>":'<button class="btn primary grow" data-act="finish">إنهاء وتصدير</button>')+"</div></div>";
+}
+function viewSection(){
+  const r=S.rounds[S.view.id];const sec=r.sections.find(x=>x.id===S.view.sid);const tab=S.view.tab||"check";
+  const notes=r.notes[sec.id]||[];const sp=checkProgress(r,sec.id);
+  let body="",bar="";
+  if(tab==="check"){
+    if(!sec.areas.length){body='<div class="empty"><p>ما فيه مناطق في هذا القسم. تقدر تضيفها من إعدادات التقرير الشهري للتقارير الجديدة.</p></div>'}
+    else{
+      const aid=sec.areas.find(a=>a.id===S.view.aid)?S.view.aid:sec.areas[0].id;S.view.aid=aid;
+      const ai=sec.areas.findIndex(a=>a.id===aid);
+      body='<div class="hscroll">'+sec.areas.map(a=>{const full=r.items.every(it=>cellVal(r,sec.id,a.id,it.id));return '<button class="chip" data-act="pick-area" data-aid="'+a.id+'" aria-pressed="'+(a.id===aid)+'">'+(full?'<span class="okm">✓</span>':"")+esc(a.name)+"</button>"}).join("")+"</div>"+
+        '<div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn grow" data-act="fill-area">تعبئة المعتاد لهذه المنطقة</button></div>'+
+        r.items.map((it,i)=>{const cur=cellVal(r,sec.id,aid,it.id);return '<div class="item"><div class="q">'+(i+1)+". "+esc(it.text)+(VL[it.good]?"<small>المعتاد: "+esc(VL[it.good].label)+"</small>":"")+'</div><div class="vals">'+
+          VALS.map(v=>'<button class="val'+(cur===v.k&&it.good&&v.k!==it.good?" off":"")+'" data-act="set-val" data-item="'+it.id+'" data-v="'+v.k+'" aria-pressed="'+(cur===v.k)+'">'+esc(v.label)+"</button>").join("")+"</div>"+
+          (cur&&it.good&&cur!==it.good&&cur!=="na"?'<button class="itemnote" data-act="note-for-item" data-item="'+it.id+'">+ أضف ملاحظة عن هذا البند</button>':"")+"</div>"}).join("")+
+        '<button class="link" data-act="fill-all">تعبئة المعتاد لكل الخانات الفاضية في القسم</button>';
+      bar=ai<sec.areas.length-1?'<button class="btn primary grow" data-act="next-area">التالي: '+esc(sec.areas[ai+1].name)+"</button>":'<button class="btn primary grow" data-act="tab" data-tab="notes">الانتقال للملاحظات</button>';
+    }
+  }else{
+    const f=S.view.f||"";
+    const shown=notes.map((n,i)=>({n,i})).filter(x=>!f||(x.n.areas||[]).includes(f));
+    body='<div class="hscroll"><button class="chip" data-act="filter-area" data-aid="" aria-pressed="'+(!f)+'">الكل</button>'+sec.areas.map(a=>{const k=notes.filter(n=>(n.areas||[]).includes(a.id)).length;return '<button class="chip" data-act="filter-area" data-aid="'+a.id+'" aria-pressed="'+(f===a.id)+'">'+esc(a.name)+(k?" ("+k+")":"")+"</button>"}).join("")+"</div>"+
+      (shown.length?'<div class="list">'+shown.map(({n,i})=>'<button class="ocard" data-act="edit-note" data-nid="'+n.id+'"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="ref">'+esc(refOf(sec,i))+'</span><span class="atxt">'+esc(areaNames(sec,n.areas)||"بدون منطقة")+'</span><span style="flex:1"></span><span class="pill '+n.level+'">'+esc(LV[n.level].short)+"</span></div>"+
+        (n.text?'<div class="txt">'+esc(n.text)+"</div>":"")+(n.action?'<div class="act"><b>الإجراء: </b>'+esc(n.action)+"</div>":"")+
+        (n.photos&&n.photos.length?'<div class="thumbs">'+n.photos.map(p=>'<img alt="" data-pid="'+esc(p.id)+'">').join("")+"</div>":"")+"</button>").join("")+"</div>"
+      :'<div class="empty"><p>'+(f?"لا توجد ملاحظات لهذه المنطقة.":"لا توجد ملاحظات في هذا القسم بعد.")+"</p></div>");
+    bar='<button class="btn primary grow" data-act="new-note">'+I.plus+"إضافة ملاحظة</button>";
+  }
+  return '<div class="top"><button class="iconbtn" data-act="back-round" aria-label="رجوع">'+I.back+'</button><h1 style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:22px;border-radius:4px;background:'+esc(sec.color)+';display:inline-block"></span>'+esc(sec.name)+"</h1></div>"+
+    '<div class="wrap"><div class="tabs"><button data-act="tab" data-tab="check" aria-pressed="'+(tab==="check")+'">البنود ('+sp.done+"/"+sp.total+')</button><button data-act="tab" data-tab="notes" aria-pressed="'+(tab==="notes")+'">الملاحظات ('+notes.length+")</button></div>"+body+"</div>"+
+    (bar?'<div class="bar"><div class="in">'+bar+"</div></div>":"");
+}
+function viewChecklist(){
+  const r=S.rounds[S.view.id];const N=daysIn(r.month);const done=r.status==="done";
+  const t=todayISO();const todayD=t.slice(0,7)===r.month?+t.slice(8,10):0;
+  let d=S.view.day||todayD||1;if(d>N)d=N;S.view.day=d;
+  const open=S.view.open||"";
+  const strip='<div class="days" data-days>'+Array.from({length:N},(_,i)=>{const k=i+1;const st=dayState(r,k);const cls=st.bad?"bad":st.full?"full":st.done?"part":"";
+    return '<button class="day '+cls+(k===todayD?" today":"")+'" data-act="pick-day" data-day="'+k+'" aria-pressed="'+(k===d)+'"><b>'+k+"</b><small>"+esc(dayLabel(r.month,k))+"</small><i></i></button>"}).join("")+"</div>";
+  const st=dayState(r,d);
+  const rows=r.items.map(it=>{const m=cMark(r,d,it.id)||{};const showNote=m.v==="bad"||m.n||open===it.id;
+    return '<div class="crow"><div class="l"><span class="t">'+esc(it.text)+'</span><button class="mk okb" data-act="mark" data-item="'+it.id+'" data-v="ok" aria-pressed="'+(m.v==="ok")+'" aria-label="مطابق">✓</button><button class="mk badb" data-act="mark" data-item="'+it.id+'" data-v="bad" aria-pressed="'+(m.v==="bad")+'" aria-label="غير مطابق">✗</button></div>'+
+      (showNote?'<input class="input" data-cnote="'+it.id+'" value="'+esc(m.n||"")+'" placeholder="ملاحظة صغيرة (اختياري)">':'<button class="nb" data-act="note-open" data-item="'+it.id+'">+ ملاحظة</button>')+"</div>"}).join("");
+  return '<div class="top"><button class="iconbtn" data-act="home" aria-label="رجوع">'+I.back+'</button><h1></h1><button class="iconbtn" data-act="round-menu" aria-label="خيارات">'+I.more+"</button></div>"+
+    '<div class="wrap"><div class="hero" style="padding-bottom:10px"><div class="kind">'+esc(TYPES.checklist)+(r.area?"، "+esc(r.area):"")+(done?"، منتهي":"")+'</div><div class="date">'+esc(monthLabel(r.month))+'</div><div class="meta">أيام مكتملة '+clDaysDone(r)+" من "+N+"</div></div>"+
+    strip+
+    '<div style="display:flex;align-items:center;gap:8px;margin:2px 0 12px"><div style="flex:1"><div style="font-weight:700;font-size:17px">يوم '+d+"، "+esc(dayLabel(r.month,d))+'</div><div class="counts">'+st.done+" من "+st.n+(st.bad?"، "+st.bad+" غير مطابق":"")+'</div></div><button class="btn" data-act="all-ok">الكل ✓</button></div>'+
+    (r.items.length?rows:'<div class="empty"><p>ما فيه بنود. أضف بنودك من زر إدارة البنود.</p></div>')+
+    '<button class="link" data-act="manage-items">إدارة البنود (إضافة، تعديل، حذف)</button></div>'+
+    '<div class="bar"><div class="in">'+(d<N?'<button class="btn primary grow" data-act="next-day">اليوم التالي ('+(d+1)+")</button>":"")+'<button class="btn'+(d<N?"":" primary grow")+'" data-act="export">'+I.share+"تصدير</button></div></div>";
+}
+function sheetManageItems(){
+  const r=S.rounds[S.view.id];
+  const draw=()=>{
+    const sh=openSheet('<div class="head"><button class="iconbtn" data-close aria-label="إغلاق">'+I.x+'</button><h2>بنود هذا الشهر</h2></div>'+
+      r.items.map((it,i)=>'<div class="srow"><input class="input grow" data-mi="'+i+'" value="'+esc(it.text)+'"><button class="iconbtn" data-mdel="'+i+'" aria-label="حذف البند" style="border:0;background:transparent;color:var(--muted)">'+I.trash+"</button></div>").join("")+
+      '<div class="srow" style="margin-top:14px"><input class="input grow" id="f-newitem" placeholder="بند جديد، مثل: نظافة المغاسل"><button class="btn primary" data-madd>إضافة</button></div>'+
+      '<p class="note">حذف بند يحذف علاماته في كل أيام الشهر. وتغيير البنود الافتراضية للشهور الجاية من الإعدادات.</p>',{full:true});
+    $("[data-close]",sh).onclick=()=>{saveRound(r);closeSheet();render()};
+    $$("[data-mi]",sh).forEach(inp=>inp.oninput=()=>{r.items[+inp.dataset.mi].text=inp.value});
+    $$("[data-mdel]",sh).forEach(b=>b.onclick=async()=>{const it=r.items[+b.dataset.mdel];const ok=await confirmSheet("حذف بند \""+it.text+"\" وعلاماته؟","احذف",true);if(!ok)return;r.items.splice(+b.dataset.mdel,1);for(const k in r.days)delete r.days[k][it.id];saveRound(r);draw()});
+    const inp=$("#f-newitem",sh);
+    const add=()=>{const v=inp.value.trim();if(!v){toast("اكتب البند");return}r.items.push({id:uid(),text:v});saveRound(r);draw();setTimeout(()=>{const x=$("#f-newitem");if(x)x.focus()},50)};
+    $("[data-madd]",sh).onclick=add;inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();add()}});
+  };
+  draw();
+}
+function viewChecklistSettings(){
+  const C=S.settings.checklist;const trash=I.trash;
+  return '<div class="top"><button class="iconbtn" data-act="settings" aria-label="رجوع">'+I.back+"</button><h1>إعدادات التشك لست اليومي</h1></div>"+
+  '<div class="wrap"><p class="note" style="margin:0 0 12px">هذي البنود الافتراضية لكل شهر جديد. وداخل كل شهر تقدر تضيف وتحذف بنود له لحاله.</p>'+
+  '<div class="sec">البنود</div>'+C.items.map((it,i)=>'<div class="srow"><input class="input grow" data-root="checklist" data-rs="items.'+i+'.text" value="'+esc(it.text)+'"><button class="iconbtn" style="border:0;background:transparent;color:var(--muted)" data-act="rs-del" data-root="checklist" data-path="items.'+i+'" aria-label="حذف">'+trash+"</button></div>").join("")+
+  '<button class="link" data-act="rs-add" data-root="checklist" data-path="items">إضافة بند</button>'+
+  '<div class="sec">التواقيع</div>'+C.signers.map((g,i)=>'<div class="sblock"><div class="srow"><input class="input grow" data-root="checklist" data-rs="signers.'+i+'.role" value="'+esc(g.role)+'" aria-label="الصفة"><button class="iconbtn" data-act="rs-del" data-root="checklist" data-path="signers.'+i+'" aria-label="حذف">'+trash+'</button></div><input class="input" data-root="checklist" data-rs="signers.'+i+'.name" value="'+esc(g.name)+'" placeholder="الاسم"></div>').join("")+
+  '<button class="link" data-act="rs-add" data-root="checklist" data-path="signers">إضافة توقيع</button></div>';
+}
+function viewReportSettings(){
+  const R=S.settings.report;const trash=I.trash;
+  const opt=g=>VALS.map(v=>'<option value="'+v.k+'"'+(g===v.k?" selected":"")+">"+esc(v.label)+"</option>").join("");
+  return '<div class="top"><button class="iconbtn" data-act="settings" aria-label="رجوع">'+I.back+"</button><h1>إعدادات التقرير الشهري</h1></div>"+
+  '<div class="wrap"><p class="note" style="margin:0 0 12px">التعديلات هنا تطبق على التقارير الجديدة. التقارير اللي بدأتها تبقى مثل ما هي.</p>'+
+  '<div class="field"><label for="rs-org">الجهة (أعلى التقرير)</label><input class="input" id="rs-org" data-rs="org" value="'+esc(R.org)+'"></div>'+
+  '<div class="field"><label for="rs-title">عنوان التقرير</label><input class="input" id="rs-title" data-rs="title" value="'+esc(R.title)+'"></div>'+
+  '<div class="sec">التواقيع</div>'+R.signers.map((g,i)=>'<div class="sblock"><div class="srow"><input class="input grow" data-rs="signers.'+i+'.role" value="'+esc(g.role)+'" aria-label="الصفة"><button class="iconbtn" data-act="rs-del" data-path="signers.'+i+'" aria-label="حذف">'+trash+'</button></div><input class="input" data-rs="signers.'+i+'.name" value="'+esc(g.name)+'" placeholder="الاسم الافتراضي"></div>').join("")+
+  '<button class="link" data-act="rs-add" data-path="signers">إضافة توقيع</button>'+
+  '<div class="sec">البنود</div>'+R.items.map((it,i)=>'<div class="sblock"><textarea class="input" style="min-height:64px" data-rs="items.'+i+'.text" aria-label="نص البند">'+esc(it.text)+'</textarea><div class="srow" style="margin:8px 0 0"><span class="flabel">المعتاد</span><select class="input" data-rs="items.'+i+'.good">'+opt(it.good)+'</select><span class="grow"></span><button class="iconbtn" data-act="rs-del" data-path="items.'+i+'" aria-label="حذف البند">'+trash+"</button></div></div>").join("")+
+  '<button class="link" data-act="rs-add" data-path="items">إضافة بند</button>'+
+  '<div class="sec">الأقسام ومناطقها</div>'+R.sections.map((sec,i)=>'<div class="sblock"><div class="srow"><input class="input grow" data-rs="sections.'+i+'.name" value="'+esc(sec.name)+'" aria-label="اسم القسم"><input class="input small" data-rs="sections.'+i+'.prefix" value="'+esc(sec.prefix)+'" aria-label="رمز الترقيم"><button class="iconbtn" data-act="rs-del" data-path="sections.'+i+'" aria-label="حذف القسم">'+trash+"</button></div>"+
+    sec.areas.map((a,j)=>'<div class="srow"><input class="input grow" data-rs="sections.'+i+".areas."+j+'.name" value="'+esc(a.name)+'" aria-label="اسم المنطقة"><button class="iconbtn" data-act="rs-del" data-path="sections.'+i+".areas."+j+'" aria-label="حذف المنطقة">'+trash+"</button></div>").join("")+
+    '<button class="link" data-act="rs-add" data-path="sections.'+i+'.areas">إضافة منطقة</button></div>').join("")+
+  '<button class="link" data-act="rs-add" data-path="sections">إضافة قسم</button>'+
+  '<p class="note">الرمز الصغير جنب اسم القسم هو بداية أرقام الملاحظات، مثل م-1 للمطبخ.</p></div>';
+}
 function viewSettings(){
   const zs=S.settings.zones.map(z=>'<div class="zrow" data-zid="'+z.id+'"><button class="sw" data-act="pick-color" style="background:'+esc(z.color)+'" aria-label="لون المنطقة"></button><input value="'+esc(z.name)+'" data-zname aria-label="اسم المنطقة"><button class="iconbtn" data-act="del-zone" aria-label="حذف المنطقة">'+I.trash+"</button></div>").join("");
   return '<div class="top"><button class="iconbtn" data-act="home" aria-label="رجوع">'+I.back+"</button><h1>الإعدادات</h1></div>"+
@@ -404,6 +596,8 @@ function viewSettings(){
   '<div class="field"><label for="f-site">الموقع</label><input class="input" id="f-site" data-setting="site" value="'+esc(S.settings.site)+'" placeholder="مثال: المطبخ المركزي"></div>'+
   '<div class="sec">مناطقك المحفوظة</div><p class="note" style="margin:-4px 0 10px">تظهر كاختيارات سريعة لما تضيف منطقة في الجولة. أي منطقة جديدة تكتبها تنحفظ هنا تلقائيًا.</p><div class="list">'+zs+'</div><button class="link" data-act="add-zone">إضافة منطقة</button>'+
   '<p class="note">حذف منطقة من هنا ما يأثر على الجولات السابقة.</p>'+
+  '<div class="sec">التقرير الشهري</div><button class="btn" style="width:100%" data-act="rsettings">الأقسام والبنود والتواقيع</button>'+
+  '<div class="sec">التشك لست اليومي</div><button class="btn" style="width:100%" data-act="csettings">البنود الافتراضية والتواقيع</button>'+
   '<div class="sec">نسخة احتياطية</div><p class="note" style="margin:-4px 0 10px">كل جولاتك وصورك محفوظة في هذا الجوال فقط. احفظ نسخة كل فترة في الملفات أو iCloud، عشان لو غيرت الجوال أو حذفت التطبيق ترجعها.</p>'+
   '<div style="display:flex;gap:10px"><button class="btn grow" data-act="backup">حفظ نسخة</button><label class="btn grow">استرجاع نسخة<input type="file" accept=".json,application/json" data-restore style="position:absolute;width:1px;height:1px;opacity:0"></label></div></div>';
 }
@@ -422,22 +616,31 @@ function openSheet(html,opts){
 function closeSheet(){$("#layer").innerHTML="";document.body.style.overflow="";}
 function confirmSheet(msg,okLabel,danger){
   return new Promise(res=>{
-    const sh=openSheet('<h2>'+esc(msg)+'</h2><div style="display:flex;gap:10px"><button class="btn grow '+(danger?"danger":"primary")+'" data-yes>'+esc(okLabel)+'</button><button class="btn grow" data-no>إلغاء</button></div>');
-    $("[data-yes]",sh).onclick=()=>{closeSheet();res(true)};
-    $("[data-no]",sh).onclick=()=>{closeSheet();res(false)};
+    const L=$("#layer2");
+    L.innerHTML='<div class="scrim" style="z-index:28"><div class="sheet" role="alertdialog" aria-modal="true"><h2>'+esc(msg)+'</h2><div style="display:flex;gap:10px"><button class="btn grow '+(danger?"danger":"primary")+'" data-yes>'+esc(okLabel)+'</button><button class="btn grow" data-no>إلغاء</button></div></div></div>';
+    document.body.style.overflow="hidden";
+    const done=v=>{L.innerHTML="";if(!$("#layer").innerHTML)document.body.style.overflow="";res(v)};
+    $("[data-yes]",L).onclick=()=>done(true);$("[data-no]",L).onclick=()=>done(false);
   });
 }
 
 function sheetNewRound(){
   let type="daily";
-  const sh=openSheet('<h2>جولة جديدة</h2><div class="field"><span class="flabel">نوع الجولة</span><div class="seg">'+
+  const sh=openSheet('<h2>جولة جديدة</h2><div class="field"><span class="flabel">نوع الجولة</span><div class="seg two">'+
     Object.entries(TYPES).map(([k,v])=>'<button class="opt" data-type="'+k+'" aria-pressed="'+(k===type)+'">'+esc(v)+"</button>").join("")+'</div></div>'+
-    '<div class="field"><label for="f-date">التاريخ</label><input class="input" type="date" id="f-date" value="'+todayISO()+'"></div>'+
-    '<p class="note" style="margin:-4px 0 16px">بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي.</p>'+
+    '<div class="field" data-g="date"><label for="f-date">التاريخ</label><input class="input" type="date" id="f-date" value="'+todayISO()+'"></div>'+
+    '<div data-g="month" hidden><div class="field"><label for="f-month">الشهر</label><input class="input" type="month" id="f-month" value="'+todayISO().slice(0,7)+'"></div><div class="field"><label for="f-area">المنطقة أو القسم (اختياري)</label><input class="input" id="f-area" placeholder="مثال: المطبخ الساخن"></div></div>'+
+    '<p class="note" style="margin:-4px 0 16px" data-tnote>بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي.</p>'+
     '<button class="btn primary" style="width:100%" data-start>ابدأ الجولة</button>');
-  $$("[data-type]",sh).forEach(b=>b.onclick=()=>{type=b.dataset.type;$$("[data-type]",sh).forEach(x=>x.setAttribute("aria-pressed",x===b))});
+  $$("[data-type]",sh).forEach(b=>b.onclick=()=>{type=b.dataset.type;$$("[data-type]",sh).forEach(x=>x.setAttribute("aria-pressed",x===b));
+    $("[data-g=date]",sh).hidden=type==="checklist";$("[data-g=month]",sh).hidden=type!=="checklist";
+    $("[data-tnote]",sh).textContent=type==="checklist"?"تشك لست لكل أيام الشهر: علامة صح أو خطأ لكل بند، مع ملاحظة صغيرة، وبدون صور.":type==="report"?"ثلاثة أقسام بجدول البنود والملاحظات والتواقيع، ويطلع تقرير للطباعة وملف صور مستقل.":"بعد البدء تضيف المناطق بنفسك بعلامة +، وتسمّيها مثل ما تبي."});
   $("[data-start]",sh).onclick=()=>{
-    const r={id:uid(),type,date:$("#f-date",sh).value||todayISO(),status:"open",createdAt:Date.now(),zones:[],obs:{}};
+    const date=$("#f-date",sh).value||todayISO();
+    let r;
+    if(type==="checklist"){const C=S.settings.checklist;const month=$("#f-month",sh).value||todayISO().slice(0,7);r={id:uid(),type,month,date:month+"-01",area:$("#f-area",sh).value.trim(),status:"open",createdAt:Date.now(),items:clone(C.items),signers:clone(C.signers),days:{},zones:[],obs:{}}}
+    else if(type==="report"){const R=S.settings.report;r={id:uid(),type,date,status:"open",createdAt:Date.now(),title:R.title,org:R.org,sections:clone(R.sections),items:clone(R.items),signers:clone(R.signers),checks:{},notes:{},spray:"",zones:[],obs:{}}}
+    else r={id:uid(),type,date,status:"open",createdAt:Date.now(),zones:[],obs:{}};
     S.rounds[r.id]=r;saveRound(r);closeSheet();go({name:"round",id:r.id});
   };
 }
@@ -498,7 +701,7 @@ function sheetRoundMenu(){
   $("[data-m=delete]",sh).onclick=async()=>{
     closeSheet();
     const ok=await confirmSheet("حذف هذه الجولة بكل ملاحظاتها وصورها؟ لا يمكن التراجع.","احذف الجولة",true);if(!ok)return;
-    const ids=[];for(const k in r.obs)for(const o of r.obs[k])for(const p of (o.photos||[]))ids.push(p.id);
+    const ids=[];for(const o of allNotes(r))for(const p of (o.photos||[]))ids.push(p.id);
     delete S.rounds[r.id];S.store.deleteRound(r.id).catch(()=>toast("تعذر حذف الجولة"));
     ids.forEach(id=>S.store.deletePhoto(id));
     go({name:"home"});toast("حُذفت الجولة");
@@ -506,17 +709,28 @@ function sheetRoundMenu(){
 }
 function finishRound(r){r.status="done";r.finishedAt=Date.now();saveRound(r);render();sheetExport(r)}
 
-/* observation editor */
-function sheetObs(existing){
-  const r=S.rounds[S.view.id];const zid=S.view.zoneId;const z=r.zones.find(x=>x.id===zid);
+/* note editor: used for free rounds (one zone) and for report sections (pick the area) */
+function obsCtx(){
+  const r=S.rounds[S.view.id];
+  if(isReport(r)){const sec=r.sections.find(x=>x.id===S.view.sid);return{r,subtitle:sec.name,areas:sec.areas,defAreas:S.view.f?[S.view.f]:[],list:()=>r.notes[sec.id]||(r.notes[sec.id]=[]),setList:a=>{r.notes[sec.id]=a}}}
+  const zid=S.view.zoneId;const z=r.zones.find(x=>x.id===zid);
+  return{r,subtitle:z.name,areas:null,list:()=>r.obs[zid]||(r.obs[zid]=[]),setList:a=>{r.obs[zid]=a}};
+}
+function sheetObs(existing,prefill){
+  const ctx=obsCtx();const r=ctx.r;
   const draft=existing?clone(existing):{id:uid(),level:"obs",text:"",action:"",photos:[],at:Date.now()};
+  if(ctx.areas&&!draft.areas)draft.areas=existing?[]:(ctx.defAreas||[]).slice();
+  if(prefill&&!existing){if(prefill.text)draft.text=prefill.text;if(prefill.areas&&ctx.areas)draft.areas=prefill.areas.slice();if(prefill.level)draft.level=prefill.level}
+  const startAreas=JSON.stringify(draft.areas||[]);
   const added=[];const removed=[];let pending=0;
+  const areaHTML=ctx.areas?'<div class="field"><span class="flabel">المنطقة (تقدر تختار أكثر من وحدة)</span><div class="chips">'+ctx.areas.map(a=>'<button class="chip" data-area="'+a.id+'" aria-pressed="'+draft.areas.includes(a.id)+'">'+esc(a.name)+"</button>").join("")+"</div></div>":"";
   const sh=openSheet(
     '<div class="head"><button class="iconbtn" data-close aria-label="إغلاق">'+I.x+'</button><h2>'+(existing?"تعديل الملاحظة":"ملاحظة جديدة")+'</h2></div>'+
-    '<div class="counts" style="margin:-4px 0 14px">'+esc(z.name)+"</div>"+
+    '<div class="counts" style="margin:-4px 0 14px">'+esc(ctx.subtitle)+"</div>"+
+    '<div class="field"><label for="f-txt">الملاحظة</label><textarea class="input" id="f-txt" placeholder="صف ما لاحظته">'+esc(draft.text)+"</textarea></div>"+
     '<div class="field"><span class="flabel">الصور (تنحفظ في جوالك فقط)</span><div class="photos" data-photos></div>'+
     '<div class="addph"><label class="btn">'+I.cam+'تصوير<input type="file" accept="image/*" capture="environment" data-file></label><label class="btn">'+I.img+'من الصور<input type="file" accept="image/*" multiple data-file></label></div></div>'+
-    '<div class="field"><label for="f-txt">الملاحظة</label><textarea class="input" id="f-txt" placeholder="صف ما لاحظته">'+esc(draft.text)+"</textarea></div>"+
+    areaHTML+
     '<div class="field"><span class="flabel">التصنيف</span><div class="lv">'+LEVELS.map(l=>'<button class="opt '+l.k+'" data-lv="'+l.k+'" aria-pressed="'+(draft.level===l.k)+'"><i class="dot '+l.k+'"></i>'+esc(l.label)+"</button>").join("")+"</div></div>"+
     '<div class="field"><label for="f-act">الإجراء التصحيحي (اختياري)</label><textarea class="input" id="f-act" style="min-height:84px" placeholder="مثال: تم التخلص من المنتج وإبلاغ المشرف">'+esc(draft.action)+"</textarea></div>"+
     '<div style="display:flex;gap:10px"><button class="btn primary grow" data-save>حفظ الملاحظة</button>'+(existing?'<button class="btn danger" data-del aria-label="حذف الملاحظة">'+I.trash+"</button>":"")+"</div>",
@@ -524,7 +738,7 @@ function sheetObs(existing){
   const box=$("[data-photos]",sh);
   function drawPhotos(){
     box.innerHTML=draft.photos.map((p,i)=>'<div class="ph"><img alt="صورة '+(i+1)+'" data-pid="'+esc(p.id)+'"><button class="x" data-rm="'+i+'" aria-label="إزالة الصورة">'+I.x+"</button></div>").join("")+
-      Array.from({length:pending}).map(()=>'<div class="ph loading">جارٍ الرفع…</div>').join("");
+      Array.from({length:pending}).map(()=>'<div class="ph loading">جارٍ الحفظ…</div>').join("");
     box.style.display=(draft.photos.length||pending)?"grid":"none";
     hydrate(box);
     $$("[data-rm]",box).forEach(b=>b.onclick=()=>{const [p]=draft.photos.splice(+b.dataset.rm,1);removed.push(p.id);drawPhotos()});
@@ -535,51 +749,34 @@ function sheetObs(existing){
     for(const f of files){
       pending++;drawPhotos();
       try{const c=await compress(f);const id=await S.store.uploadPhoto(c.blob);added.push(id);draft.photos.push({id,w:c.w,h:c.h})}
-      catch(e){console.warn(e);toast("تعذر إضافة الصورة")}
+      catch(e){console.warn(e);toast("تعذر حفظ الصورة في الجوال")}
       pending--;drawPhotos();
     }
   });
+  $$("[data-area]",sh).forEach(b=>b.onclick=()=>{const id=b.dataset.area;const k=draft.areas.indexOf(id);if(k>=0)draft.areas.splice(k,1);else draft.areas.push(id);b.setAttribute("aria-pressed",k<0)});
   $$("[data-lv]",sh).forEach(b=>b.onclick=()=>{draft.level=b.dataset.lv;$$("[data-lv]",sh).forEach(x=>x.setAttribute("aria-pressed",x===b))});
-  const cancel=()=>{added.forEach(id=>S.store.deletePhoto(id));closeSheet()};
   $("[data-close]",sh).onclick=async()=>{
-    const dirty=added.length||removed.length||$("#f-txt",sh).value!==(existing?existing.text:"")||$("#f-act",sh).value!==(existing?existing.action:"");
-    if(dirty){closeSheet();const ok=await confirmSheet("تجاهل التغييرات على هذه الملاحظة؟","تجاهل",true);if(ok){added.forEach(id=>S.store.deletePhoto(id))}else{reopen()}}
-    else cancel();
+    const dirty=added.length||removed.length||$("#f-txt",sh).value!==(existing?existing.text:"")||$("#f-act",sh).value!==(existing?existing.action:"")||JSON.stringify(draft.areas||[])!==startAreas;
+    if(dirty){const ok=await confirmSheet("تجاهل التغييرات على هذه الملاحظة؟","تجاهل",true);if(!ok)return}
+    added.forEach(id=>S.store.deletePhoto(id));closeSheet();
   };
-  function reopen(){ // restore the editor with the current draft
-    draft.text=$("#f-txt",sh).value;draft.action=$("#f-act",sh).value;
-    const keepAdded=added.slice(),keepRemoved=removed.slice();
-    sheetObsResume(existing,draft,keepAdded,keepRemoved);
-  }
   $("[data-save]",sh).onclick=()=>{
-    if(pending){toast("انتظر حتى يكتمل رفع الصور");return}
+    if(pending){toast("انتظر حتى تنحفظ الصور");return}
     draft.text=$("#f-txt",sh).value.trim();draft.action=$("#f-act",sh).value.trim();
     if(!draft.text&&!draft.photos.length){toast("اكتب الملاحظة أو أضف صورة");return}
-    const arr=r.obs[zid]||(r.obs[zid]=[]);
+    if(ctx.areas&&!draft.areas.length){toast("اختر المنطقة");return}
+    const arr=ctx.list();
     const i=arr.findIndex(o=>o.id===draft.id);if(i>=0)arr[i]=draft;else arr.push(draft);
     removed.forEach(id=>S.store.deletePhoto(id));
     saveRound(r);closeSheet();render();toast("حُفظت الملاحظة");
   };
   const del=$("[data-del]",sh);
   if(del)del.onclick=async()=>{
-    closeSheet();
-    const ok=await confirmSheet("حذف هذه الملاحظة وصورها؟","احذف",true);
-    if(!ok){sheetObsResume(existing,draft,added,removed);return}
-    r.obs[zid]=(r.obs[zid]||[]).filter(o=>o.id!==existing.id);
+    const ok=await confirmSheet("حذف هذه الملاحظة وصورها؟","احذف",true);if(!ok)return;
+    ctx.setList(ctx.list().filter(o=>o.id!==existing.id));
     [...existing.photos.map(p=>p.id),...added].forEach(id=>S.store.deletePhoto(id));
-    saveRound(r);render();toast("حُذفت الملاحظة");
+    saveRound(r);closeSheet();render();toast("حُذفت الملاحظة");
   };
-  return {sh,draft,added,removed};
-}
-function sheetObsResume(existing,draft,added,removed){
-  const o=sheetObs(existing);
-  Object.assign(o.draft,draft);o.added.push(...added);o.removed.push(...removed);
-  $("#f-txt",o.sh).value=draft.text||"";$("#f-act",o.sh).value=draft.action||"";
-  $$("[data-lv]",o.sh).forEach(x=>x.setAttribute("aria-pressed",x.dataset.lv===draft.level));
-  const box=$("[data-photos]",o.sh);
-  box.innerHTML=o.draft.photos.map((p,i)=>'<div class="ph"><img alt="" data-pid="'+esc(p.id)+'"><button class="x" data-rm="'+i+'" aria-label="إزالة الصورة">'+I.x+"</button></div>").join("");
-  box.style.display=o.draft.photos.length?"grid":"none";hydrate(box);
-  $$("[data-rm]",box).forEach(b=>b.onclick=()=>{const [p]=o.draft.photos.splice(+b.dataset.rm,1);o.removed.push(p.id);b.closest(".ph").remove()});
 }
 
 /* zone colour picker */
@@ -650,7 +847,7 @@ async function backup(){
   busy(true,"جارٍ تجهيز النسخة…");
   try{
     const photos={};
-    for(const r of Object.values(S.rounds))for(const k in r.obs)for(const o of r.obs[k])for(const p of (o.photos||[])){
+    for(const r of Object.values(S.rounds))for(const o of allNotes(r))for(const p of (o.photos||[])){
       if(p.id.startsWith("l_")){const u=await photoURL(p.id);if(u)photos[p.id]=u}
     }
     const data={app:"kitchen-rounds",version:1,savedAt:Date.now(),settings:S.settings,rounds:Object.values(S.rounds),photos};
@@ -669,14 +866,62 @@ async function restore(file){
   busy(true,"جارٍ الاسترجاع…");
   try{
     for(const [id,u] of Object.entries(data.photos||{})){await LocalDB.put("photos",id,u);urlCache.set(id,u)}
-    for(const r of data.rounds||[]){if(r&&r.id){r.obs=r.obs||{};r.zones=r.zones||[];S.rounds[r.id]=r;await S.store.saveRound(r)}}
+    for(const r of data.rounds||[]){if(r&&r.id){normRound(r);S.rounds[r.id]=r;await S.store.saveRound(r)}}
     const names=new Set(S.settings.zones.map(z=>z.name.trim()));
     for(const z of (data.settings&&data.settings.zones)||[]){if(z&&z.name&&!names.has(z.name.trim())){S.settings.zones.push(z);names.add(z.name.trim())}}
     saveSettings();busy(false);toast("تم استرجاع النسخة");go({name:"home"});
   }catch(e){console.error(e);busy(false);toast("تعذر إكمال الاسترجاع")}
 }
 
+function reportPhotoRound(r){
+  const zones=[],obs={};let n=0;
+  for(const sec of r.sections){
+    const list=(r.notes[sec.id]||[]).map((x,i)=>({x,i})).filter(o=>(o.x.photos||[]).length);
+    if(!list.length)continue;
+    zones.push({id:sec.id,name:sec.name,color:sec.color});
+    obs[sec.id]=list.map(({x,i})=>Object.assign({},x,{_ref:refOf(sec,i),_areas:areaNames(sec,x.areas)}));n+=list.length;
+  }
+  return{type:"photos",date:r.date,zones,obs,_n:n};
+}
+function sheetExportReport(r){
+  const c=roundCounts(r);const pr=reportPhotoRound(r);
+  const sh=openSheet('<h2>تصدير التقرير الشهري</h2><p class="note" style="margin:-6px 0 14px">'+esc(fmtDate(r.date))+"، "+c.total+" ملاحظة، منها "+pr._n+" بصور</p>"+
+    '<div class="exp">'+
+    '<button class="btn" data-x="print"><span class="badge" style="background:#15232A">PDF</span><span>تقرير للطباعة والتوقيع<small>الجداول والملاحظات والتواقيع، بدون صور</small></span></button>'+
+    '<button class="btn" data-x="photos"'+(pr._n?"":" disabled")+'><span class="badge" style="background:#B3261E">IMG</span><span>ملف الصور المرفق<small>'+(pr._n?"كل صورة برقم ملاحظتها في التقرير":"ما فيه صور في هذا التقرير")+'</small></span></button>'+
+    '<button class="btn" data-x="rxlsx"><span class="badge" style="background:#2E7D32">XLS</span><span>Excel<small>الجداول والملاحظات للأرشفة</small></span></button>'+
+    "</div>");
+  $$("[data-x]",sh).forEach(b=>b.onclick=async()=>{
+    const kind=b.dataset.x;closeSheet();
+    busy(true,"جارٍ تجهيز الملف…");
+    try{
+      const base=(r.title||TYPES.report)+" "+r.date;
+      let blob,name;
+      if(kind==="print"){blob=await makeReportPrint(r);name=base+".pdf"}
+      else if(kind==="photos"){blob=await makePDF(pr,{kind:"الصور المرفقة: "+(r.title||TYPES.report),noSummary:true,meta:[["ملاحظات مصوّرة",String(pr._n)]]});name="صور "+base+".pdf"}
+      else{blob=await makeReportXLSX(r);name=base+".xlsx"}
+      busy(false);await saveFile(name,blob);
+    }catch(e){
+      console.error(e);busy(false);
+      toast(String(e&&e.message||"").startsWith("load")?"تعذر تحميل أداة التصدير، تأكد من الاتصال بالإنترنت":"تعذر تجهيز الملف");
+    }
+  });
+}
+function sheetExportChecklist(r){
+  const sh=openSheet('<h2>تصدير التشك لست</h2><p class="note" style="margin:-6px 0 14px">'+esc(monthLabel(r.month))+(r.area?"، "+esc(r.area):"")+"، أيام مكتملة "+clDaysDone(r)+" من "+daysIn(r.month)+"</p>"+
+    '<div class="exp"><button class="btn" data-x="cprint"><span class="badge" style="background:#15232A">PDF</span><span>جدول الشهر للطباعة والتوقيع<small>كل الأيام في صفحة، مع الملاحظات والتواقيع</small></span></button>'+
+    '<button class="btn" data-x="cxlsx"><span class="badge" style="background:#2E7D32">XLS</span><span>Excel<small>الجدول والملاحظات للأرشفة</small></span></button></div>');
+  $$("[data-x]",sh).forEach(b=>b.onclick=async()=>{
+    const kind=b.dataset.x;closeSheet();busy(true,"جارٍ تجهيز الملف…");
+    try{const base=TYPES.checklist+(r.area?" "+r.area:"")+" "+r.month;
+      const blob=kind==="cprint"?await makeChecklistPrint(r):await makeChecklistXLSX(r);
+      busy(false);await saveFile(base+(kind==="cprint"?".pdf":".xlsx"),blob);
+    }catch(e){console.error(e);busy(false);toast(String(e&&e.message||"").startsWith("load")?"تعذر تحميل أداة التصدير، تأكد من الاتصال بالإنترنت":"تعذر تجهيز الملف")}
+  });
+}
 function sheetExport(r){
+  if(isChecklist(r))return sheetExportChecklist(r);
+  if(isReport(r))return sheetExportReport(r);
   const c=roundCounts(r);
   const sh=openSheet('<h2>تصدير التقرير</h2><p class="note" style="margin:-6px 0 14px">'+esc(TYPES[r.type])+"، "+esc(fmtDate(r.date))+"، "+c.total+" ملاحظة</p>"+
     '<div class="exp">'+
@@ -697,6 +942,226 @@ function sheetExport(r){
       toast(String(e&&e.message||"").startsWith("load")?"تعذر تحميل أداة التصدير، تأكد من الاتصال بالإنترنت":"تعذر تجهيز الملف");
     }
   });
+}
+
+async function makeReportPrint(r){
+  await loadScript(LIBS.jspdf);const {jsPDF}=window.jspdf;
+  const FF='"IBM Plex Sans Arabic", Tahoma, "DejaVu Sans", sans-serif';
+  try{await Promise.all([400,600,700].map(w=>document.fonts.load(w+' 16px "IBM Plex Sans Arabic"',"عربي 123")))}catch(e){}
+  const W=1123,H=794,K=1.6,MX=34,TOP=28,BOT=40,CW=W-2*MX,RIGHT=W-MX,INK="#111111",LINE="#333333",SOFT="#9AA3A5";
+  const f=(w,sz)=>w+" "+sz+"px "+FF;
+  const meas=document.createElement("canvas").getContext("2d");
+  const tw=(t,fo)=>{meas.font=fo;meas.direction="rtl";return meas.measureText(t).width};
+  function T(ctx,text,x,y,fo,color,align,dir){ctx.font=fo;ctx.fillStyle=color||INK;ctx.textAlign=align||"right";ctx.textBaseline="middle";ctx.direction=dir||"rtl";ctx.fillText(text,x,y)}
+  function wrap(text,fo,max,firstMax){
+    const out=[];let lim=firstMax||max;
+    for(const para of String(text).split(/\r?\n/)){
+      const words=para.split(/\s+/).filter(Boolean);if(!words.length){if(out.length)out.push("");lim=max;continue}
+      let line="";
+      for(const w of words){const t=line?line+" "+w:w;if(tw(t,fo)<=lim){line=t;continue}if(line){out.push(line);lim=max}line=w}
+      out.push(line);lim=max;
+    }
+    return out.length?out:[""];
+  }
+  function fitSize(t,w,sz,max,min){let s=max;while(s>min&&tw(t,f(w,s))>sz)s-=0.5;return s}
+  const box=(ctx,x,y,w,h,fill)=>{if(fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}ctx.strokeStyle=LINE;ctx.lineWidth=0.8;ctx.strokeRect(x+.5,y+.5,w,h)};
+
+  const pages=[];let page=null,y=0;
+  const newPage=sec=>{page={sec,items:[]};pages.push(page);y=TOP};
+  const place=(h,draw)=>{if(y+h>H-BOT){newPage(page.sec);draw.cont&&draw.cont()}page.items.push({y,draw});y+=h};
+
+  r.sections.forEach((sec,si)=>{
+    newPage(sec);
+    const areas=sec.areas;const n=Math.max(1,areas.length);
+    const IC=Math.min(330,Math.max(250,CW-n*110));const AW=(CW-IC)/n;
+    // header
+    place(62,(ctx,y0)=>{
+      T(ctx,r.org||"",RIGHT,y0+12,f(700,14));
+      T(ctx,(r.title||TYPES.report)+"، جدول رقم "+(si+1),RIGHT,y0+33,f(400,13),"#333333");
+      T(ctx,"تاريخ الزيارة: \u2066"+r.date+"\u2069",W/2,y0+14,f(600,13.5),INK,"center");
+      T(ctx,sec.name,MX,y0+22,f(700,21),INK,"left");
+      ctx.fillStyle=LINE;ctx.fillRect(MX,y0+52,CW,1.2);
+    });
+    // table header
+    place(48,(ctx,y0)=>{
+      box(ctx,RIGHT-IC,y0,IC,48,"#E9EEEE");T(ctx,"نقاط المتابعة والمراقبة",RIGHT-10,y0+24,f(700,12.5));
+      areas.forEach((a,k)=>{const x=RIGHT-IC-(k+1)*AW;box(ctx,x,y0,AW,48,"#E9EEEE");
+        const fo=f(700,11.5);const lines=wrap(a.name,fo,AW-8).slice(0,2);
+        lines.forEach((ln,li)=>T(ctx,ln,x+AW/2,y0+24+(lines.length===2?(li?8:-8):0),fo,INK,"center"));});
+    });
+    // item rows
+    r.items.forEach((it,ii)=>{
+      const fo=f(400,12);const lines=wrap((ii+1)+". "+it.text,fo,IC-16);const h=Math.max(30,lines.length*16+12);
+      place(h,(ctx,y0)=>{
+        box(ctx,RIGHT-IC,y0,IC,h);lines.forEach((ln,li)=>T(ctx,ln,RIGHT-8,y0+(h-lines.length*16)/2+8+li*16,fo));
+        areas.forEach((a,k)=>{const x=RIGHT-IC-(k+1)*AW;const v=cellVal(r,sec.id,a.id,it.id);const off=v&&it.good&&v!==it.good&&v!=="na";
+          box(ctx,x,y0,AW,h,off?"#F1F1F1":null);
+          if(v){const lab=VL[v]?VL[v].label:v;const w=off?700:400;const sz=fitSize(lab,w,AW-8,12,8);T(ctx,lab,x+AW/2,y0+h/2,f(w,sz),INK,"center")}});
+      });
+    });
+    place(26,(ctx,y0)=>{T(ctx,"التقييم: نعم / فعالة   •   لا / غير فعالة   •   لا يوجد   •   تحتاج صيانة   •   لا تحتاجها المنطقة      (الخانة المظللة بخط عريض: خلاف المعتاد)",RIGHT,y0+15,f(400,10.5),"#444444")});
+    // notes
+    const notes=r.notes[sec.id]||[];
+    place(30,(ctx,y0)=>{box(ctx,MX,y0,CW,30,"#E9EEEE");T(ctx,"الملاحظات",RIGHT-10,y0+15,f(700,13))});
+    const LHN=22,tf=f(400,12.5),rf=f(700,12.5),af=f(600,12.5);
+    if(!notes.length)place(LHN+6,(ctx,y0)=>{box(ctx,MX,y0,CW,LHN+6);T(ctx,"لا توجد ملاحظات.",RIGHT-10,y0+(LHN+6)/2,tf,"#555555")});
+    notes.forEach((nt,ni)=>{
+      const ref=refOf(sec,ni);const an=areaNames(sec,nt.areas);
+      const refW=tw(ref,rf)+14;const aStr=an?an+": ":"";const aW=aStr?tw(aStr,af):0;
+      let text=nt.text||"";
+      if(nt.action)text+=(text?"  ":"")+"الإجراء: "+nt.action;
+      if((nt.photos||[]).length)text+="  (مرفق صورة "+ref+")";
+      const lines=wrap(text,tf,CW-24,CW-24-refW-aW);
+      lines.forEach((ln,li)=>{
+        const h=li===lines.length-1?LHN+6:LHN;
+        place(h,(ctx,y0)=>{
+          ctx.strokeStyle=LINE;ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(MX+.5,y0);ctx.lineTo(MX+.5,y0+h);ctx.moveTo(RIGHT+.5,y0);ctx.lineTo(RIGHT+.5,y0+h);ctx.stroke();
+          if(li===lines.length-1){ctx.strokeStyle=SOFT;ctx.lineWidth=0.6;ctx.beginPath();ctx.moveTo(MX,y0+h-.5);ctx.lineTo(RIGHT,y0+h-.5);ctx.stroke()}
+          const cy=y0+LHN/2+2;
+          if(li===0){T(ctx,ref,RIGHT-10,cy,rf);if(aStr)T(ctx,aStr,RIGHT-10-refW,cy,af);T(ctx,ln,RIGHT-10-refW-aW,cy,tf)}
+          else T(ctx,ln,RIGHT-10-refW,cy,tf);
+        });
+      });
+    });
+    // closing line of the notes box
+    place(1,(ctx,y0)=>{ctx.fillStyle=LINE;ctx.fillRect(MX,y0-0.5,CW+1,1)});
+    // spray visits + signatures kept together
+    const LW=230;const sprayLines=wrap(r.spray||"",tf,CW-LW-20);const sh=Math.max(34,sprayLines.length*18+14);
+    const sigH=46;const need=10+sh+24+r.signers.length*sigH;
+    if(y+need>H-BOT)newPage(sec);
+    y+=10;
+    place(sh,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,sh,"#E9EEEE");T(ctx,"أيام زيارة شركة الرش",RIGHT-10,y0+sh/2,f(700,12.5));box(ctx,MX,y0,CW-LW,sh);
+      sprayLines.forEach((ln,li)=>T(ctx,ln,RIGHT-LW-10,y0+(sh-sprayLines.length*18)/2+9+li*18,tf))});
+    const NW=300;
+    place(24,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,24,"#E9EEEE");box(ctx,RIGHT-LW-NW,y0,NW,24,"#E9EEEE");box(ctx,MX,y0,CW-LW-NW,24,"#E9EEEE");
+      T(ctx,"الصفة",RIGHT-10,y0+12,f(700,11.5));T(ctx,"الاسم",RIGHT-LW-10,y0+12,f(700,11.5));T(ctx,"التوقيع",RIGHT-LW-NW-10,y0+12,f(700,11.5))});
+    r.signers.forEach(g=>place(sigH,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,sigH);box(ctx,RIGHT-LW-NW,y0,NW,sigH);box(ctx,MX,y0,CW-LW-NW,sigH);
+      T(ctx,g.role||"",RIGHT-10,y0+sigH/2,f(600,12.5));T(ctx,g.name||"",RIGHT-LW-10,y0+sigH/2,f(400,13))}));
+  });
+
+  const total=pages.length;
+  const cv=document.createElement("canvas");cv.width=W*K;cv.height=H*K;const ctx=cv.getContext("2d");
+  const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"landscape",compress:true});
+  pages.forEach((pg,pi)=>{
+    ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);ctx.setTransform(K,0,0,K,0,0);
+    pg.items.forEach(it=>it.draw(ctx,it.y));
+    T(ctx,(pi+1)+" / "+total,W/2,H-18,f(400,10),"#888888","center","ltr");
+    T(ctx,pg.sec.name,RIGHT,H-18,f(400,10),"#888888");
+    if(pi)pdf.addPage("a4","landscape");
+    pdf.addImage(cv.toDataURL("image/jpeg",0.8),"JPEG",0,0,297,210,undefined,"FAST");
+  });
+  return pdf.output("blob");
+}
+
+async function makeReportXLSX(r){
+  await loadScript(LIBS.xlsx);const X=window.XLSX;
+  const wb=X.utils.book_new();
+  r.sections.forEach((sec,si)=>{
+    const aoa=[[r.org||""],[(r.title||TYPES.report)+"، جدول رقم "+(si+1),"","تاريخ الزيارة",r.date],[sec.name],[],["نقاط المتابعة والمراقبة",...sec.areas.map(a=>a.name)]];
+    r.items.forEach((it,i)=>aoa.push([(i+1)+". "+it.text,...sec.areas.map(a=>{const v=cellVal(r,sec.id,a.id,it.id);return v?VL[v].label:""})]));
+    aoa.push([],["الملاحظات"],["الرقم","المنطقة","الملاحظة","الإجراء التصحيحي","التصنيف","عدد الصور"]);
+    (r.notes[sec.id]||[]).forEach((n,i)=>aoa.push([refOf(sec,i),areaNames(sec,n.areas),n.text||"",n.action||"",LV[n.level].label,(n.photos||[]).length]));
+    aoa.push([],["أيام زيارة شركة الرش",r.spray||""],[],["الصفة","الاسم","التوقيع"]);
+    r.signers.forEach(g=>aoa.push([g.role,g.name,""]));
+    const ws=X.utils.aoa_to_sheet(aoa);ws["!cols"]=[{wch:48},...sec.areas.map(()=>({wch:18}))];
+    let nm=sec.name.replace(/[\\\/\?\*\[\]:]/g," ").slice(0,31);
+    X.utils.book_append_sheet(wb,ws,nm||("قسم "+(si+1)));
+  });
+  wb.Workbook={Views:[{RTL:true}]};
+  const out=X.write(wb,{bookType:"xlsx",type:"array"});
+  return new Blob([out],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+
+async function makeChecklistPrint(r){
+  await loadScript(LIBS.jspdf);const {jsPDF}=window.jspdf;
+  const FF='"IBM Plex Sans Arabic", Tahoma, "DejaVu Sans", sans-serif';
+  try{await Promise.all([400,600,700].map(w=>document.fonts.load(w+' 16px "IBM Plex Sans Arabic"',"عربي 123")))}catch(e){}
+  const W=1123,H=794,K=1.6,MX=30,TOP=26,BOT=38,CW=W-2*MX,RIGHT=W-MX,INK="#111111",LINE="#333333";
+  const f=(w,sz)=>w+" "+sz+"px "+FF;
+  const meas=document.createElement("canvas").getContext("2d");
+  const tw=(t,fo)=>{meas.font=fo;meas.direction="rtl";return meas.measureText(t).width};
+  function T(ctx,text,x,y,fo,color,align,dir){ctx.font=fo;ctx.fillStyle=color||INK;ctx.textAlign=align||"right";ctx.textBaseline="middle";ctx.direction=dir||"rtl";ctx.fillText(text,x,y)}
+  function wrap(text,fo,max){const out=[];for(const para of String(text).split(/\r?\n/)){const words=para.split(/\s+/).filter(Boolean);let line="";for(const w of words){const t=line?line+" "+w:w;if(tw(t,fo)<=max){line=t;continue}if(line)out.push(line);line=w}if(line)out.push(line)}return out.length?out:[""]}
+  const box=(ctx,x,y,w,h,fill)=>{if(fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}ctx.strokeStyle=LINE;ctx.lineWidth=0.7;ctx.strokeRect(x+.5,y+.5,w,h)};
+  const tick=(ctx,cx,cy,s)=>{ctx.strokeStyle=INK;ctx.lineWidth=1.8;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(cx-s*.42,cy+s*.02);ctx.lineTo(cx-s*.12,cy+s*.32);ctx.lineTo(cx+s*.45,cy-s*.36);ctx.stroke()};
+  const cross=(ctx,cx,cy,s)=>{ctx.strokeStyle=INK;ctx.lineWidth=2;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(cx-s*.34,cy-s*.34);ctx.lineTo(cx+s*.34,cy+s*.34);ctx.moveTo(cx+s*.34,cy-s*.34);ctx.lineTo(cx-s*.34,cy+s*.34);ctx.stroke()};
+  const N=daysIn(r.month);const IC=220;const DW=(CW-IC)/N;
+  // numbered notes
+  const notes=[];const noteNo={};
+  for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,d,it.id);if(m&&m.n&&m.n.trim()){notes.push({d,it,m});noteNo[d+"|"+it.id]=notes.length}});
+  const pages=[];let page=null,y=0;
+  const newPage=()=>{page={items:[]};pages.push(page);y=TOP};
+  const place=(h,draw)=>{if(y+h>H-BOT)newPage();page.items.push({y,draw});y+=h};
+  newPage();
+  const org=(S.settings.report&&S.settings.report.org)||"";
+  place(58,(ctx,y0)=>{
+    if(org)T(ctx,org,RIGHT,y0+12,f(700,14));
+    T(ctx,TYPES.checklist+(r.area?"، "+r.area:""),RIGHT,y0+33,f(400,13),"#333333");
+    T(ctx,"الشهر: "+monthLabel(r.month),W/2,y0+14,f(600,13.5),INK,"center");
+    T(ctx,r.area||TYPES.checklist,MX,y0+22,f(700,20),INK,"left");
+    ctx.fillStyle=LINE;ctx.fillRect(MX,y0+50,CW,1.2);
+  });
+  const header=(ctx,y0)=>{box(ctx,RIGHT-IC,y0,IC,40,"#E9EEEE");T(ctx,"البند / اليوم",RIGHT-8,y0+20,f(700,12));
+    for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;box(ctx,x,y0,DW,40,"#E9EEEE");T(ctx,String(d),x+DW/2,y0+14,f(700,11),INK,"center","ltr");T(ctx,dayLabel(r.month,d).replace(/^ال/,"").slice(0,4),x+DW/2,y0+29,f(400,7.5),"#555555","center")}};
+  place(40,header);
+  r.items.forEach((it,ii)=>{
+    const fo=f(400,11);const lines=wrap((ii+1)+". "+it.text,fo,IC-12);const h=Math.max(26,lines.length*14+10);
+    if(y+h>H-BOT){newPage();place(40,header)}
+    place(h,(ctx,y0)=>{
+      box(ctx,RIGHT-IC,y0,IC,h);lines.forEach((ln,li)=>T(ctx,ln,RIGHT-6,y0+(h-lines.length*14)/2+7+li*14,fo));
+      for(let d=1;d<=N;d++){const x=RIGHT-IC-d*DW;const m=cMark(r,d,it.id);box(ctx,x,y0,DW,h,m&&m.v==="bad"?"#E6E6E6":null);
+        if(m&&m.v==="ok")tick(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.62);
+        else if(m&&m.v==="bad")cross(ctx,x+DW/2,y0+h/2,Math.min(DW,h)*0.6);
+        const no=noteNo[d+"|"+it.id];if(no)T(ctx,String(no),x+3,y0+7,f(700,7.5),INK,"left","ltr");}
+    });
+  });
+  place(24,(ctx,y0)=>{T(ctx,"✓ مطابق      ✗ غير مطابق      الرقم الصغير في الخانة = رقم الملاحظة تحت",RIGHT,y0+14,f(400,10.5),"#444444")});
+  // notes
+  place(28,(ctx,y0)=>{box(ctx,MX,y0,CW,28,"#E9EEEE");T(ctx,"الملاحظات",RIGHT-10,y0+14,f(700,12.5))});
+  const nf=f(400,11.5),nb=f(700,11.5);
+  if(!notes.length)place(26,(ctx,y0)=>{box(ctx,MX,y0,CW,26);T(ctx,"لا توجد ملاحظات.",RIGHT-10,y0+13,nf,"#555555")});
+  notes.forEach((x,i)=>{
+    const head="("+(i+1)+") يوم "+x.d+"، "+x.it.text+": ";const hw=tw(head,nb);
+    const lines=wrap(x.m.n,nf,CW-24-hw);
+    lines.forEach((ln,li)=>place(22,(ctx,y0)=>{
+      ctx.strokeStyle=LINE;ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(MX+.5,y0);ctx.lineTo(MX+.5,y0+22);ctx.moveTo(RIGHT+.5,y0);ctx.lineTo(RIGHT+.5,y0+22);ctx.stroke();
+      if(li===lines.length-1){ctx.strokeStyle="#9AA3A5";ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(MX,y0+21.5);ctx.lineTo(RIGHT,y0+21.5);ctx.stroke()}
+      if(li===0)T(ctx,head,RIGHT-10,y0+11,nb);T(ctx,ln,RIGHT-10-hw,y0+11,nf);
+    }));
+  });
+  place(1,(ctx,y0)=>{ctx.fillStyle=LINE;ctx.fillRect(MX,y0-0.5,CW+1,1)});
+  // signatures
+  const LW=230,NW=300,SH=42;const need=12+24+r.signers.length*SH;
+  if(y+need>H-BOT)newPage();y+=12;
+  if(r.signers.length){
+    place(24,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,24,"#E9EEEE");box(ctx,RIGHT-LW-NW,y0,NW,24,"#E9EEEE");box(ctx,MX,y0,CW-LW-NW,24,"#E9EEEE");
+      T(ctx,"الصفة",RIGHT-10,y0+12,f(700,11.5));T(ctx,"الاسم",RIGHT-LW-10,y0+12,f(700,11.5));T(ctx,"التوقيع",RIGHT-LW-NW-10,y0+12,f(700,11.5))});
+    r.signers.forEach(g=>place(SH,(ctx,y0)=>{box(ctx,RIGHT-LW,y0,LW,SH);box(ctx,RIGHT-LW-NW,y0,NW,SH);box(ctx,MX,y0,CW-LW-NW,SH);
+      T(ctx,g.role||"",RIGHT-10,y0+SH/2,f(600,12.5));T(ctx,g.name||"",RIGHT-LW-10,y0+SH/2,f(400,13))}));
+  }
+  const total=pages.length;
+  const cv=document.createElement("canvas");cv.width=W*K;cv.height=H*K;const ctx=cv.getContext("2d");
+  const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"landscape",compress:true});
+  pages.forEach((pg,pi)=>{
+    ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);ctx.setTransform(K,0,0,K,0,0);
+    pg.items.forEach(it=>it.draw(ctx,it.y));
+    if(total>1)T(ctx,(pi+1)+" / "+total,W/2,H-16,f(400,10),"#888888","center","ltr");
+    if(pi)pdf.addPage("a4","landscape");
+    pdf.addImage(cv.toDataURL("image/jpeg",0.82),"JPEG",0,0,297,210,undefined,"FAST");
+  });
+  return pdf.output("blob");
+}
+async function makeChecklistXLSX(r){
+  await loadScript(LIBS.xlsx);const X=window.XLSX;const N=daysIn(r.month);
+  const aoa=[[TYPES.checklist+(r.area?"، "+r.area:""),"","الشهر",monthLabel(r.month)],[],["البند",...Array.from({length:N},(_,i)=>String(i+1))]];
+  r.items.forEach(it=>aoa.push([it.text,...Array.from({length:N},(_,i)=>{const m=cMark(r,i+1,it.id);return m?(m.v==="ok"?"✓":"✗"):""})]));
+  aoa.push([],["الملاحظات"],["اليوم","البند","الحالة","الملاحظة"]);
+  for(let d=1;d<=N;d++)r.items.forEach(it=>{const m=cMark(r,d,it.id);if(m&&m.n)aoa.push([d,it.text,m.v==="ok"?"✓":m.v==="bad"?"✗":"",m.n])});
+  aoa.push([],["الصفة","الاسم","التوقيع"]);r.signers.forEach(g=>aoa.push([g.role,g.name,""]));
+  const ws=X.utils.aoa_to_sheet(aoa);ws["!cols"]=[{wch:40},...Array.from({length:N},()=>({wch:4}))];
+  const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,"التشك لست");wb.Workbook={Views:[{RTL:true}]};
+  const out=X.write(wb,{bookType:"xlsx",type:"array"});
+  return new Blob([out],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 }
 
 function summaryRows(r){return r.zones.map(z=>{const k=zoneCounts(r,z.id);return[z.name,k.ok,k.obs,k.minor,k.major,k.total]})}
@@ -773,7 +1238,8 @@ async function makeDOCX(r){
   return await Packer.toBlob(doc);
 }
 
-async function makePDF(r){
+async function makePDF(r,opts){
+  opts=opts||{};
   await loadScript(LIBS.jspdf);const {jsPDF}=window.jspdf;
   const FF='"IBM Plex Sans Arabic", Tahoma, "DejaVu Sans", sans-serif';
   try{await Promise.all([400,600,700].map(w=>document.fonts.load(w+' 16px "IBM Plex Sans Arabic"',"عربي 123")))}catch(e){}
@@ -811,9 +1277,9 @@ async function makePDF(r){
   const c=roundCounts(r);
 
   // header
-  const meta=[["الموقع",S.settings.site],["المفتش",S.settings.inspector],["عدد الملاحظات",String(c.total)]].filter(x=>x[1]);
+  const meta=(opts.meta||[["الموقع",S.settings.site],["المفتش",S.settings.inspector],["عدد الملاحظات",String(c.total)]]).filter(x=>x[1]);
   add({h:22+44+meta.length*24+18,draw(ctx,y){
-    T(ctx,TYPES[r.type]||"",RIGHT,y+11,f(400,15),"#555555");
+    T(ctx,opts.kind||TYPES[r.type]||"",RIGHT,y+11,f(400,15),"#555555");
     T(ctx,fmtDate(r.date,true),RIGHT,y+22+22,f(700,28),"#1a1a1a");
     meta.forEach(([k,v],i)=>{const cy=y+66+i*24+12;T(ctx,k,RIGHT,cy,f(400,14),"#666666");T(ctx,fit(v,f(500,14),CW-120),RIGHT-120,cy,f(500,14),"#1a1a1a")});
     ctx.fillStyle="#0E5B60";ctx.fillRect(0,y+this.h-3,W,3);
@@ -836,9 +1302,11 @@ async function makePDF(r){
       });
     }};
   }
-  add(row(["المنطقة","مطابق","ملاحظة","بسيطة","كبرى","الإجمالي"],true));
-  summaryRows(r).forEach(rw=>add(row(rw)));
-  add(row(["الإجمالي",c.ok,c.obs,c.minor,c.major,c.total]));
+  if(!opts.noSummary){
+    add(row(["المنطقة","مطابق","ملاحظة","بسيطة","كبرى","الإجمالي"],true));
+    summaryRows(r).forEach(rw=>add(row(rw)));
+    add(row(["الإجمالي",c.ok,c.obs,c.minor,c.major,c.total]));
+  }
 
   // zones and observations (only zones that have observations; empty ones stay in the summary table)
   const IR=RIGHT-16,IW=CW-32,LH=27,IMW=216,IMH=162,IG=9;
@@ -859,16 +1327,17 @@ async function makePDF(r){
       // compact photo grid beside the text: bigger when few, smaller thumbnails when many
       const n=ph.length;const pc=n>=3?3:n;const PW=n<=1?150:n===2?122:100,PH=Math.round(PW*0.75),PG=6;
       const photoW=pc?pc*PW+(pc-1)*PG:0;const TW=IW-(pc?photoW+20:0);
-      const tf=f(400,14.5),TLH=25;const tl=o.text?wrap(o.text,tf,TW):[];
+      const tf=f(400,14.5),TLH=25;const body=o._areas?o._areas+": "+(o.text||""):o.text;const tl=body?wrap(body,tf,TW):[];
       const lab="الإجراء التصحيحي: ",lf=f(700,13.5),af=f(400,13.5);const lw=tw(lab,lf);
       const al=o.action?wrap(o.action,af,TW,TW-lw):[];
       const textH=26+(tl.length?8+tl.length*TLH:0)+(al.length?6+al.length*23:0);
       const rows=pc?Math.ceil(ph.length/pc):0;const phH=rows?rows*PH+(rows-1)*PG:0;
       const h=12+Math.max(textH,phH)+12;
       function head(ctx,cy){
-        ctx.beginPath();ctx.arc(IR-12,cy,12,0,Math.PI*2);ctx.fillStyle="#15232A";ctx.fill();
-        T(ctx,num,IR-12,cy+1,f(700,12),"#ffffff","center","ltr");
-        const labl=LV[o.level].label,fo=f(700,13);const pw=tw(labl,fo)+24;const px=IR-32-pw;
+        let bw=24;
+        if(o._ref){bw=tw(o._ref,f(700,13))+18;path(ctx,IR-bw,cy-12,bw,24,6,6);ctx.fillStyle="#15232A";ctx.fill();T(ctx,o._ref,IR-bw/2,cy+1,f(700,13),"#ffffff","center")}
+        else{ctx.beginPath();ctx.arc(IR-12,cy,12,0,Math.PI*2);ctx.fillStyle="#15232A";ctx.fill();T(ctx,num,IR-12,cy+1,f(700,12),"#ffffff","center","ltr")}
+        const labl=LV[o.level].label,fo=f(700,13);const pw=tw(labl,fo)+24;const px=IR-bw-8-pw;
         path(ctx,px,cy-12,pw,24,12,12);ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
         T(ctx,labl,px+pw/2,cy+1,fo,col,"center");
         T(ctx,fmtTime(o.at),px-10,cy+1,f(400,12.5),"#777777");
@@ -915,7 +1384,7 @@ async function makePDF(r){
       });
     });
   }
-  if(!c.total)add({h:40,draw(ctx,y){T(ctx,"لم تُسجَّل ملاحظات في هذه الجولة.",RIGHT,y+26,f(400,14),"#777777")}});
+  if(!c.total&&!opts.noSummary)add({h:40,draw(ctx,y){T(ctx,"لم تُسجَّل ملاحظات في هذه الجولة.",RIGHT,y+26,f(400,14),"#777777")}});
 
   // paginate
   const pages=[[]];let y=TOP;const maxY=H-BOT;
@@ -953,6 +1422,44 @@ document.addEventListener("click",e=>{
   else if(a==="round-menu")sheetRoundMenu();
   else if(a==="zone-menu")sheetZoneMenu();
   else if(a==="backup")backup();
+  else if(a==="open-section")go({name:"section",id:S.view.id,sid:el.dataset.sid,tab:"check"});
+  else if(a==="tab"){S.view.tab=el.dataset.tab;render();window.scrollTo(0,0)}
+  else if(a==="pick-area"){S.view.aid=el.dataset.aid;render();window.scrollTo(0,0)}
+  else if(a==="filter-area"){S.view.f=el.dataset.aid||"";render()}
+  else if(a==="set-val"){const r=S.rounds[S.view.id];const cur=cellVal(r,S.view.sid,S.view.aid,el.dataset.item);setCell(r,S.view.sid,S.view.aid,el.dataset.item,cur===el.dataset.v?"":el.dataset.v);saveRound(r);render()}
+  else if(a==="fill-area"||a==="fill-all"){
+    const r=S.rounds[S.view.id];const sec=r.sections.find(x=>x.id===S.view.sid);let k=0;
+    for(const ar of sec.areas){if(a==="fill-area"&&ar.id!==S.view.aid)continue;for(const it of r.items){if(it.good&&!cellVal(r,sec.id,ar.id,it.id)){setCell(r,sec.id,ar.id,it.id,it.good);k++}}}
+    saveRound(r);render();toast(k?"تمت تعبئة "+k+" خانة بالمعتاد، عدّل اللي يختلف":"كل الخانات معبّأة");
+  }
+  else if(a==="next-area"){const r=S.rounds[S.view.id];const sec=r.sections.find(x=>x.id===S.view.sid);const i=sec.areas.findIndex(x=>x.id===S.view.aid);if(sec.areas[i+1]){S.view.aid=sec.areas[i+1].id;render();window.scrollTo(0,0)}}
+  else if(a==="new-note")sheetObs(null);
+  else if(a==="edit-note"){const r=S.rounds[S.view.id];const n=(r.notes[S.view.sid]||[]).find(x=>x.id===el.dataset.nid);if(n)sheetObs(n)}
+  else if(a==="rsettings")go({name:"rsettings"});
+  else if(a==="csettings")go({name:"csettings"});
+  else if(a==="pick-day"){S.view.day=+el.dataset.day;S.view.open="";const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx}
+  else if(a==="next-day"){S.view.day=(S.view.day||1)+1;S.view.open="";render();window.scrollTo(0,0);centerDay()}
+  else if(a==="mark"){const r=S.rounds[S.view.id];const d=S.view.day;const iid=el.dataset.item;const day=(r.days[d]=r.days[d]||{});const m=day[iid]||{};
+    if(m.v===el.dataset.v){if(m.n)delete m.v;else{delete day[iid];m.v=null}}else m.v=el.dataset.v;
+    if(m.v||m.n)day[iid]=m;saveRound(r);const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;
+    if(m.v==="bad"){const inp=$('[data-cnote="'+iid+'"]');if(inp&&!inp.value)inp.focus({preventScroll:true})}}
+  else if(a==="all-ok"){const r=S.rounds[S.view.id];const d=S.view.day;const day=(r.days[d]=r.days[d]||{});let k=0;for(const it of r.items){const m=day[it.id]||{};if(!m.v){m.v="ok";day[it.id]=m;k++}}saveRound(r);const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;toast(k?"علّمت "+k+" بند بصح، غيّر اللي فيه ملاحظة":"كل البنود معلّمة")}
+  else if(a==="note-open"){S.view.open=el.dataset.item;const sx=($("[data-days]")||{}).scrollLeft;render();const st=$("[data-days]");if(st&&sx!=null)st.scrollLeft=sx;const inp=$('[data-cnote="'+el.dataset.item+'"]');if(inp)inp.focus({preventScroll:true})}
+  else if(a==="manage-items")sheetManageItems();
+  else if(a==="note-for-item"){const r=S.rounds[S.view.id];const it=r.items.find(x=>x.id===el.dataset.item);const v=cellVal(r,S.view.sid,S.view.aid,it.id);sheetObs(null,{text:it.text+" ("+(VL[v]?VL[v].label:"")+"): ",areas:[S.view.aid],level:v==="maint"?"minor":"obs"})}
+  else if(a==="rs-add"){
+    const root=el.dataset.root||"report";const R=S.settings[root];const path=el.dataset.path;const arr=getPath(R,path);if(!Array.isArray(arr))return;
+    if(path==="signers")arr.push({id:uid(),role:"توقيع",name:""});
+    else if(path==="items")arr.push(root==="checklist"?{id:uid(),text:"بند جديد"}:{id:uid(),text:"بند جديد",good:"yes"});
+    else if(path==="sections")arr.push({id:uid(),name:"قسم جديد",prefix:"ق",color:PALETTE[arr.length%PALETTE.length],areas:[]});
+    else arr.push({id:uid(),name:"منطقة جديدة"});
+    saveSettings();render();
+  }
+  else if(a==="rs-del"){
+    const R=S.settings[el.dataset.root||"report"];const parts=el.dataset.path.split(".");const idx=+parts.pop();const arr=getPath(R,parts.join("."));if(!Array.isArray(arr))return;
+    const what=parts[parts.length-1]==="sections"?"هذا القسم بكل مناطقه":"هذا العنصر";
+    confirmSheet("حذف "+what+" من إعدادات التقرير؟","احذف",true).then(ok=>{if(!ok)return;arr.splice(idx,1);saveSettings();render()});
+  }
   else if(a==="add-zone-to-round")sheetAddZoneToRound();
   else if(a==="finish")finishRound(S.rounds[S.view.id]);
   else if(a==="export")sheetExport(S.rounds[S.view.id]);
@@ -968,10 +1475,17 @@ document.addEventListener("click",e=>{
     const inputs=$$("[data-zname]");const last=inputs[inputs.length-1];if(last){last.focus();last.select()}
   }
 });
-document.addEventListener("change",e=>{const t=e.target;if(t.hasAttribute&&t.hasAttribute("data-restore")){const f=t.files&&t.files[0];t.value="";if(f)restore(f)}});
-let settingsTimer=null;
+document.addEventListener("change",e=>{const t=e.target;if(t.tagName==="SELECT"&&t.dataset.rs){setPath(S.settings[t.dataset.root||"report"],t.dataset.rs,t.value);saveSettings();return}if(t.hasAttribute&&t.hasAttribute("data-restore")){const f=t.files&&t.files[0];t.value="";if(f)restore(f)}});
+let settingsTimer=null,roundTimer=null;
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t.dataset.rfield||t.dataset.rsig){
+    const r=S.rounds[S.view.id];if(!r)return;
+    if(t.dataset.rfield)r[t.dataset.rfield]=t.value;else r.signers[+t.dataset.rsig].name=t.value;
+    clearTimeout(roundTimer);roundTimer=setTimeout(()=>saveRound(r),600);return;
+  }
+  if(t.dataset.cnote){const r=S.rounds[S.view.id];if(!r)return;const d=S.view.day;const day=(r.days[d]=r.days[d]||{});const m=day[t.dataset.cnote]||{};m.n=t.value;if(!m.v&&!m.n)delete day[t.dataset.cnote];else day[t.dataset.cnote]=m;clearTimeout(roundTimer);roundTimer=setTimeout(()=>saveRound(r),600);return}
+  if(t.dataset.rs){setPath(S.settings[t.dataset.root||"report"],t.dataset.rs,t.value);clearTimeout(settingsTimer);settingsTimer=setTimeout(saveSettings,600);return}
   if(t.hasAttribute("data-zname")){const z=S.settings.zones.find(x=>x.id===t.closest("[data-zid]").dataset.zid);if(z)z.name=t.value}
   else if(t.dataset.setting){S.settings[t.dataset.setting]=t.value}
   else return;
@@ -988,7 +1502,9 @@ document.addEventListener("input",e=>{
     S.settings=data.settings||defaultSettings();
     if(!data.settings)saveSettings();
     S.settings.zones=S.settings.zones||[];
-    for(const r of data.rounds){if(r&&r.id){r.obs=r.obs||{};r.zones=r.zones||[];S.rounds[r.id]=r}}
+    for(const r of data.rounds){if(r&&r.id){normRound(r);S.rounds[r.id]=r}}
+    if(!S.settings.report){S.settings.report=defaultReport(S.settings.inspector);saveSettings()}
+    if(!S.settings.checklist){S.settings.checklist=defaultChecklist(S.settings.inspector);saveSettings()}
     render();
   }catch(e){
     console.error(e);
